@@ -25,6 +25,6 @@ else(DOXYGEN_FOUND)
 endif(DOXYGEN_FOUND)
 
 #Proj build
-file(GLOB CPP_SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/*.h)
+file(GLOB CPP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
 add_executable(proj1_aed ${CPP_SOURCES})
