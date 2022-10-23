@@ -18,7 +18,7 @@ enum Tipo{
  * @brief Guarda as informações relativas a uma aula 
  * 
  */
-class Slot{
+struct Slot{
     std::string dia;
     float hora_inicio;
     float hora_final;

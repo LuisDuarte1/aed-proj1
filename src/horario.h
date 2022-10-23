@@ -4,7 +4,7 @@
 #include "turma.h"
 #include "slot.h"
 
-class Horario{
+struct Horario{
     Turma turma;
     Slot slot;
 };
