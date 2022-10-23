@@ -12,9 +12,18 @@
 
 
 class GestaoHorarios{
-    std::set<Estudante> estudantes;
-    std::list<Horario> horarios;
-    std::queue<Pedidos> pedidos_pendentes;
+    public:
+        std::set<Estudante> estudantes;
+        std::list<Horario> horarios;
+        std::queue<Pedidos> pedidos_pendentes;
+        std::list<Turma> turmas; 
+
+        /**
+         * @brief Lê os ficheiros .csv para carregar os estudantes. 
+         * Atenção que os .csv devem ser postos na pasta recursos FORA da pasta de build do CMake.
+         * 
+         */
+        void lerFicheiros();
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include <iostream>
-#include "slot.h"
-
+#include "gestaoHorarios.h"
 int main(){
-    std::cout << "Hello world!\n";
+    GestaoHorarios gestao;
+    gestao.lerFicheiros();
 }
