@@ -83,17 +83,29 @@ void GestaoHorarios::lerFicheiros(){
         s.hora_final = s.hora_inicio + duracao;
 
         std::getline(uc_linha_stream, cache_string, ',');
-
-        if(cache_string == "TP\r"){
-            s.tipo_aula = Teorico_Pratica;
-        }else if(cache_string == "T\r"){
-            s.tipo_aula = Teorica;
-        } else if(cache_string == "PL\r"){
-            s.tipo_aula = Pratica_Laboratorial;
-        } else{
-            std::cout << "Nao foi reconhecido o tipo de aula: " << cache_string <<"\n";
-            exit(1);
-        }
+        #ifndef _WIN32
+            if(cache_string == "TP\r"){
+                s.tipo_aula = Teorico_Pratica;
+            }else if(cache_string == "T\r"){
+                s.tipo_aula = Teorica;
+            } else if(cache_string == "PL\r"){
+                s.tipo_aula = Pratica_Laboratorial;
+            } else{
+                std::cout << "Nao foi reconhecido o tipo de aula: " << cache_string <<"\n";
+                exit(1);
+            }
+        #else
+            if(cache_string == "TP"){
+                s.tipo_aula = Teorico_Pratica;
+            }else if(cache_string == "T"){
+                s.tipo_aula = Teorica;
+            } else if(cache_string == "PL"){
+                s.tipo_aula = Pratica_Laboratorial;
+            } else{
+                std::cout << "Nao foi reconhecido o tipo de aula: " << cache_string <<"\n";
+                exit(1);
+            }
+        #endif
         
 
         (*t_found).aulas.push_back(s);
