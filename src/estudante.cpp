@@ -5,11 +5,12 @@ bool Estudante::operator==(const Estudante& outro_estudante){
     return outro_estudante.getStudentNumber() == numero_up;
 }
 
-void Estudante::adicionarTurma(const Turma& nova_turma){
+void Estudante::adicionarTurma(const std::shared_ptr<Turma>& nova_turma){
     turmas_inscrito.push_back(nova_turma);
+    (*nova_turma).estudantes += 1;
 }
 
-void Estudante::removerTurma(Turma& turma_remover){
+void Estudante::removerTurma(std::shared_ptr<Turma>& turma_remover){
     bool encontrado = false;
     for(auto i = turmas_inscrito.begin(); i != turmas_inscrito.end(); i++){
         if((*i) == turma_remover){
@@ -17,6 +18,8 @@ void Estudante::removerTurma(Turma& turma_remover){
             encontrado = true;
             break;
         }
+        (*turma_remover).estudantes -= 1;
+
     }
     if(!encontrado){
         std::cout << "Nao foi encontrado a turma para remover ao estudante...\n";

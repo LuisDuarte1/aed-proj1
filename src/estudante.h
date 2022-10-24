@@ -3,13 +3,14 @@
 
 #include <iostream>
 #include <list>
+#include <memory>
 
 #include "turma.h"
 
 class Estudante{
     int numero_up;
     std::string nome;
-    std::list<Turma> turmas_inscrito;
+    std::list<std::shared_ptr<Turma>> turmas_inscrito;
 
     public:
         /**
@@ -58,7 +59,7 @@ class Estudante{
          * 
          * @return std::list<Turma> 
          */
-        inline std::list<Turma> getTurmas() const{ return turmas_inscrito;};
+        inline std::list<std::shared_ptr<Turma>> getTurmas() const{ return turmas_inscrito;};
 
         /**
          * @brief Adiciona uma turma em que o estudante vai passar a estar inscrito.
@@ -67,7 +68,7 @@ class Estudante{
          * 
          * @param nova_turma Turma para adicionar
          */
-        void adicionarTurma(const Turma& nova_turma);
+        void adicionarTurma(const std::shared_ptr<Turma>& nova_turma);
 
         /**
          * @brief Tenta remover uma turma em que o estudante está inscrito. 
@@ -75,7 +76,7 @@ class Estudante{
          * 
          * @param turma_remover Turma para remover
          */
-        void removerTurma(Turma& turma_remover);
+        void removerTurma(std::shared_ptr<Turma>& turma_remover);
 
 
 
