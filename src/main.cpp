@@ -3,4 +3,5 @@
 int main(){
     GestaoHorarios gestao;
     gestao.lerFicheiros();
+
 }
