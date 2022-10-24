@@ -12,8 +12,8 @@ enum TipoPedido{
 class Pedidos{
     int numero_up;
     TipoPedido tipo;
-    Turma turma_inicio;
-    Turma turma_final;
+    std::shared_ptr<Turma> turma_inicio;
+    std::shared_ptr<Turma> turma_final;
 
 };
 
