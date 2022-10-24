@@ -27,6 +27,9 @@ struct Turma{
      * @return false se for diferente
      */
     bool operator==(const Turma& outra_turma);
+    int getestudantes();
+    void addestudantes();
+    void removeestudantes();
 };
 
 #endif

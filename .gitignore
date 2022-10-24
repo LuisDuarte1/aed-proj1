@@ -1,2 +1,4 @@
 build/**
 docs/output/**
+cmake-build-debug/
+.idea/**
