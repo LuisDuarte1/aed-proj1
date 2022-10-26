@@ -2,6 +2,7 @@
 #define PEDIDOS_H
 
 #include "turma.h"
+#include <memory>
 
 enum TipoPedido{
     Adicionar,

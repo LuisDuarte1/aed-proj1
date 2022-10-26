@@ -1,4 +1,19 @@
 #include "estudante.h"
+#include <set>
+#include <memory>
+
+void adicionarEstudanteTurma(std::set<Estudante>& e_set,Estudante& estudante ,std::shared_ptr<Turma> turma){
+    estudante.adicionarTurma(turma);
+    e_set.erase(estudante);
+    e_set.insert(estudante);
+}
+
+void removerEstudanteTurma(std::set<Estudante>& e_set,Estudante& estudante ,std::shared_ptr<Turma> turma){
+    estudante.removerTurma(turma);
+    e_set.erase(estudante);
+    e_set.insert(estudante);
+}
+
 
 
 bool Estudante::operator==(const Estudante& outro_estudante){
@@ -36,6 +51,8 @@ Estudante::Estudante(int _numero_up, std::string _nome) : numero_up(_numero_up),
 bool operator<(const Estudante& a, const Estudante& b){
     return a.numero_up < b.numero_up;
 }
+
+
 
 
 
