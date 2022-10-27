@@ -2,8 +2,11 @@
 // Created by wwwjo on 24/10/2022.
 //
 
-#ifndef PROJ1_AED_MENU_H
-#define PROJ1_AED_MENU_H
+#ifndef MENU_H
+#define MENU_H
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
 
 
 class menu {
