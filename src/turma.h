@@ -26,6 +26,7 @@ struct Turma{
      * @return true se for igual
      * @return false se for diferente
      */
+public:
     bool operator==(const Turma& outra_turma);
     int getestudantes();
     void addestudantes();

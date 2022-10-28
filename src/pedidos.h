@@ -1,7 +1,10 @@
 #ifndef PEDIDOS_H
 #define PEDIDOS_H
 
+#include <memory>
+
 #include "turma.h"
+
 
 enum TipoPedido{
     Adicionar,
@@ -15,8 +18,8 @@ class Pedidos{
     std::shared_ptr<Turma> turma_inicio;
     std::shared_ptr<Turma> turma_final;
 public:
-    Pedidos(int numero_up, TipoPedido tipo, Turma turma);
-    Pedidos(int numero_up, TipoPedido tipo, Turma turma_inicio, Turma turma_final);
+    Pedidos(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma);
+    Pedidos(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma_inicio, std::shared_ptr<Turma> turma_final);
     bool conflito();
     bool desiquilibrio();
     void adicionar_turma();
