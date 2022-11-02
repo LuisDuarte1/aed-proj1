@@ -44,9 +44,17 @@ void menu::estudante(){
         cout<<"Por favor, insira sem o 'up' \n";
         return menu::estudante();
     }
-    nestudante="up"+nestudante;
+    int n_up = atoi(nestudante.c_str());
 
-    //Incompleto
+    auto it = GestaoHorarios::estudantes.find(Estudante(n_up, ""));
+
+    if(it == GestaoHorarios::estudantes.end()){
+        cout << "Esse estudante nao foi encontrado... tente de novo...\n";
+        return menu::estudante();
+    }
+
+    menu::printhorario(it->getTurmas());
+
 }
 void menu::UCandTurmaandAno(){
     int n;
