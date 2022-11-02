@@ -6,6 +6,7 @@
 #define MENU_H
 #include <iostream>
 #include <bits/stdc++.h>
+#include "slot.h"
 using namespace std;
 
 
@@ -17,10 +18,10 @@ class menu {
          */
         void iniciar();
         void estudante();
-        void UCandTurma();
+        void UCandTurmaandAno();
         void estudantesmaisnucs();
-        void estudantesemumauc();
         void pedidosalteracao();
+        void printhorario(vector<Slot> horarios);
 };
 
 
