@@ -21,7 +21,7 @@ class menu {
         void UCandTurmaandAno();
         void estudantesmaisnucs();
         void pedidosalteracao();
-        void printhorario(vector<Slot> horarios);
+        void printhorario(list<Slot> horarios);
 };
 
 
