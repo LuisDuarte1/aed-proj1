@@ -12,21 +12,28 @@ enum TipoPedido{
     Mudar
 };
 
-class Pedidos{
-    int numero_up;
+
+class Pedido{
+    int nup;
     TipoPedido tipo;
     std::shared_ptr<Turma> turma_inicio;
     std::shared_ptr<Turma> turma_final;
 public:
-    Pedidos(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma);
-    Pedidos(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma_inicio, std::shared_ptr<Turma> turma_final);
-    bool conflito();
-    bool desiquilibrio();
+    Pedido(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma);
+    Pedido(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma_inicio, std::shared_ptr<Turma> turma_final);
     void adicionar_turma();
     void remover_turma();
     void alterar_turma();
 };
 
 
+class ConjuntoPedidos{
+public:
+    std::list<Pedido> lista_pedidos;
+
+    bool conflito();
+    bool desiquilibrio();
+
+};
 
 #endif

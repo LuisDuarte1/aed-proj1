@@ -2,13 +2,13 @@
 #include <set>
 #include <memory>
 
-void adicionarEstudanteTurma(std::set<Estudante>& e_set,Estudante& estudante ,std::shared_ptr<Turma> turma){
+void adicionarEstudanteTurma(std::set<Estudante>& e_set,Estudante estudante ,std::shared_ptr<Turma> turma){
     estudante.adicionarTurma(turma);
     e_set.erase(estudante);
     e_set.insert(estudante);
 }
 
-void removerEstudanteTurma(std::set<Estudante>& e_set,Estudante& estudante ,std::shared_ptr<Turma> turma){
+void removerEstudanteTurma(std::set<Estudante>& e_set,Estudante estudante ,std::shared_ptr<Turma> turma){
     estudante.removerTurma(turma);
     e_set.erase(estudante);
     e_set.insert(estudante);
