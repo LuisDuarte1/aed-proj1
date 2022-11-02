@@ -7,7 +7,8 @@
 
 std::set<Estudante> GestaoHorarios::estudantes;
 std::list<std::shared_ptr<Turma>> GestaoHorarios::turmas;
-std::list<Pedidos> GestaoHorarios::pedidos_pendentes;
+std::list<Pedido> GestaoHorarios::pedidos_pendentes;
+std::list<Pedido> GestaoHorarios::pedidos_recusados;
 
 
 
