@@ -3,13 +3,15 @@
 
 #include <iostream>
 #include <list>
+#include <memory>
+#include <set>
 
 #include "turma.h"
 
 class Estudante{
     int numero_up;
     std::string nome;
-    std::list<Turma> turmas_inscrito;
+    std::list<std::shared_ptr<Turma>> turmas_inscrito;
 
     public:
         /**
@@ -58,7 +60,7 @@ class Estudante{
          * 
          * @return std::list<Turma> 
          */
-        inline std::list<Turma> getTurmas() const{ return turmas_inscrito;};
+        inline std::list<std::shared_ptr<Turma>> getTurmas() const{ return turmas_inscrito;};
 
         /**
          * @brief Adiciona uma turma em que o estudante vai passar a estar inscrito.
@@ -67,7 +69,7 @@ class Estudante{
          * 
          * @param nova_turma Turma para adicionar
          */
-        void adicionarTurma(const Turma& nova_turma);
+        void adicionarTurma(const std::shared_ptr<Turma>& nova_turma);
 
         /**
          * @brief Tenta remover uma turma em que o estudante está inscrito. 
@@ -75,10 +77,36 @@ class Estudante{
          * 
          * @param turma_remover Turma para remover
          */
-        void removerTurma(Turma& turma_remover);
+        void removerTurma(std::shared_ptr<Turma>& turma_remover);
 
 
 
 };
+
+/**
+ * @brief Função global para adicionar um estudante a uma turma porque é impossível mutar um estudante 
+ * diretamente de um set. Para isso mutamos o estudante, removemos esse do set e voltamos a adicionar.
+ * Complexidade: log(n) já que o std::set garante o balanceamento da tree
+ * 
+ * 
+ * @param e_set que contem todos os estudantes
+ * @param estudante para a quem adiciona a turma
+ * @param turma a adicionar
+ */
+void adicionarEstudanteTurma(std::set<Estudante>& e_set, Estudante& estudante, std::shared_ptr<Turma> turma);
+
+
+
+/**
+ * @brief Função global para remover um estudante a uma turma porque é impossível mutar um estudante 
+ * diretamente de um set. Para isso mutamos o estudante, removemos esse do set e voltamos a adicionar.
+ * Complexidade: log(n) já que o std::set garante o balanceamento da tree
+ * 
+ * 
+ * @param e_set que contem todos os estudantes
+ * @param estudante para a quem remove a turma
+ * @param turma a remover
+ */
+void removerEstudanteTurma(std::set<Estudante>& e_set,Estudante& estudante ,std::shared_ptr<Turma> turma);
 
 #endif

@@ -7,16 +7,14 @@
 #include <queue>
 
 #include "estudante.h"
-#include "horario.h"
 #include "pedidos.h"
 
 
 class GestaoHorarios{
     public:
         std::set<Estudante> estudantes;
-        std::list<Horario> horarios;
         std::queue<Pedidos> pedidos_pendentes;
-        std::list<Turma> turmas; 
+        std::list<std::shared_ptr<Turma>> turmas; 
 
         /**
          * @brief Lê os ficheiros .csv para carregar os estudantes. 

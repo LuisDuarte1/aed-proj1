@@ -37,11 +37,13 @@ void GestaoHorarios::lerFicheiros(){
     
     while(std::getline(ucs,uc_linha).good()){
         std::istringstream uc_linha_stream(uc_linha);
-        Turma t;
-        std::getline(uc_linha_stream, t.uc_code, ',');
-        std::getline(uc_linha_stream,t.class_code, ',');
-        trim_string(t.class_code);
-        t.estudantes = 0;
+        std::shared_ptr<Turma> t = std::make_shared<Turma>();
+        
+        std::getline(uc_linha_stream, (*t).uc_code, ',');
+        std::getline(uc_linha_stream,(*t).class_code, ',');
+        trim_string((*t).class_code);
+        (*t).estudantes = 0;
+
 
         this->turmas.push_back(t);
     }
@@ -53,16 +55,23 @@ void GestaoHorarios::lerFicheiros(){
     std::getline(turma_horario,uc_linha);
     
     while(std::getline(turma_horario,uc_linha).good()){
-        Horario h;
 
         std::istringstream uc_linha_stream(uc_linha);
         Turma t;
         std::getline(uc_linha_stream,t.class_code, ',');
         std::getline(uc_linha_stream, t.uc_code, ',');
 
-        //TODO: verficar se é áçido
+        std::shared_ptr<Turma> t_found;
+        bool found = false;
+        for(auto it = turmas.begin(); it != turmas.end(); it++){
+            if(*(*it) == t) {
+                t_found = *it;
+                found = true;
+                break;
+            }
+        }
+
         t.estudantes = 0;
-        h.turma = t;
         Slot s;
         std::string cache_string;
         std::getline(uc_linha_stream, s.dia, ',');
@@ -74,21 +83,32 @@ void GestaoHorarios::lerFicheiros(){
         s.hora_final = s.hora_inicio + duracao;
 
         std::getline(uc_linha_stream, cache_string, ',');
-
-        if(cache_string == "TP\r"){
-            s.tipo_aula = Teorico_Pratica;
-        }else if(cache_string == "T\r"){
-            s.tipo_aula = Teorica;
-        } else if(cache_string == "PL\r"){
-            s.tipo_aula = Pratica_Laboratorial;
-        } else{
-            std::cout << "Nao foi reconhecido o tipo de aula: " << cache_string <<"\n";
-            exit(1);
-        }
-        h.slot = s;
+        #ifndef _WIN32
+            if(cache_string == "TP\r"){
+                s.tipo_aula = Teorico_Pratica;
+            }else if(cache_string == "T\r"){
+                s.tipo_aula = Teorica;
+            } else if(cache_string == "PL\r"){
+                s.tipo_aula = Pratica_Laboratorial;
+            } else{
+                std::cout << "Nao foi reconhecido o tipo de aula: " << cache_string <<"\n";
+                exit(1);
+            }
+        #else
+            if(cache_string == "TP"){
+                s.tipo_aula = Teorico_Pratica;
+            }else if(cache_string == "T"){
+                s.tipo_aula = Teorica;
+            } else if(cache_string == "PL"){
+                s.tipo_aula = Pratica_Laboratorial;
+            } else{
+                std::cout << "Nao foi reconhecido o tipo de aula: " << cache_string <<"\n";
+                exit(1);
+            }
+        #endif
         
 
-        this->horarios.push_back(h);
+        (*t_found).aulas.push_back(s);
     }
     
 
@@ -128,18 +148,19 @@ void GestaoHorarios::lerFicheiros(){
 
         //ver se a turma é válida
         bool valida = false;
-        for(auto t_it = this->turmas.begin(); t_it != this->turmas.end(); t_it++){
-            if((*t_it) == t_cmp){
+        auto t_it = this->turmas.begin();
+        for(;t_it != this->turmas.end(); t_it++){
+            if(*(*t_it) == t_cmp){
                 valida = true;
                 break;
             }
         }
-        if(!valida){
+        if(valida){
+            adicionarEstudanteTurma(this->estudantes, e, *t_it);
+        } else {
             std::cout << "Turma do estudante nao e valida... Ignorando esta entry.\n";
             //TODO (luisd): usar ostream overloads para dar melhor print ao erro
             continue;
         }
-        e.adicionarTurma(t_cmp);
-
     }
 }
