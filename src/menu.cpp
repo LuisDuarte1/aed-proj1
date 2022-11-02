@@ -93,7 +93,11 @@ void menu::UCandTurmaandAno(){
                 break;
             case 2:
                 for(auto i : turmas_curso){
-                    menu::printhorario(i->aulas);
+                    cout <<"\n Horario de " << i->class_code <<":" <<i->uc_code << ":\n";
+                    
+                    menu::printhorario({i});
+
+                    cout << "\n\n ===================================================== \n\n";
                 }
                 break;
 
@@ -167,7 +171,7 @@ void menu::UCandTurmaandAno(){
                 }
                 case 2:{
                     cout <<"\n Horario de " << t_p->class_code <<":" <<t_p->uc_code << ":\n";
-                    menu::printhorario(t_p->aulas);
+                    menu::printhorario({t_p});
                     break;
                 }
                 default:{
@@ -321,6 +325,19 @@ void menu::pedidosalteracao(){
 
     }
 }
+
+std::string convertTipoAula(Tipo t){
+    switch (t)
+    {
+    case(Teorica):
+        return "T";
+    case(Teorico_Pratica):
+        return "TP";
+    case(Pratica_Laboratorial):
+        return "PL";
+    }
+}
+
 bool compareinicio(pair<Slot,string> a, pair<Slot,string> b){
     return(a.first.hora_inicio < b.first.hora_inicio);
 }
@@ -332,7 +349,7 @@ void menu::printhorario(list<shared_ptr<Turma>> horarios) {
     vector<pair<Slot, string>> sextas;
     for(auto it=horarios.begin();it !=horarios.end();++it){
         list<Slot> f = (*it)->getaulas();
-        for(auto iter=f.begin();iter !=f.begin();++iter){
+        for(auto iter=f.begin();iter !=f.end();++iter){
             if(iter->dia == "Monday"){
                 segundas.push_back(make_pair(*iter, (*it)->uc_code));
             }
@@ -347,25 +364,21 @@ void menu::printhorario(list<shared_ptr<Turma>> horarios) {
     sort(quintas.begin(),quintas.end(), compareinicio);
     sort(quartas.begin(),quartas.end(), compareinicio);
     sort(sextas.begin(),sextas.end(), compareinicio);
-    cout << "\nSEGUNDA-FEIRA:\n\n";
-    for(int i = 0;i<segundas.size();i++){
-        cout << "\t- UC: " << segundas[i].second<<" Tipo de aula: "<< segundas[i].first.tipo_aula <<" Hora de inicio: "<<segundas[i].first.hora_inicio<<" Hora final: "<<segundas[i].first.hora_final<<".\n";
+    
+    for(int i = 0;i<segundas.size() && cout << "\nSegunda-feira:\n\n";i++){
+        cout << "\t- UC: " << segundas[i].second<<" Tipo de aula: "<< convertTipoAula(segundas[i].first.tipo_aula) <<" Hora de inicio: "<<segundas[i].first.hora_inicio<<" Hora final: "<<segundas[i].first.hora_final<<".\n";
     }
-    cout << "\nTERCA-FEIRA:\n\n";
-    for(int i = 0;i<tercas.size();i++){
-        cout << "\t- UC: " << tercas[i].second<<" Tipo de aula: "<< tercas[i].first.tipo_aula <<" Hora de inicio: "<<tercas[i].first.hora_inicio<<" Hora final: "<<tercas[i].first.hora_final<<".\n";
+    for(int i = 0;i<tercas.size() && cout << "\nTerca-feira:\n\n";i++){
+        cout << "\t- UC: " << tercas[i].second<<" Tipo de aula: "<< convertTipoAula(tercas[i].first.tipo_aula) <<" Hora de inicio: "<<tercas[i].first.hora_inicio<<" Hora final: "<<tercas[i].first.hora_final<<".\n";
     }
-    cout << "\nQUARTA-FEIRA:\n\n";
-    for(int i = 0;i<quartas.size();i++){
-        cout << "\t- UC: " << quartas[i].second<<" Tipo de aula: "<< quartas[i].first.tipo_aula <<" Hora de inicio: "<<quartas[i].first.hora_inicio<<" Hora final: "<<quartas[i].first.hora_final<<".\n";
+    for(int i = 0;i<quartas.size() && cout << "\nQuarta-feira:\n\n";i++){
+        cout << "\t- UC: " << quartas[i].second<<" Tipo de aula: "<< convertTipoAula(quartas[i].first.tipo_aula) <<" Hora de inicio: "<<quartas[i].first.hora_inicio<<" Hora final: "<<quartas[i].first.hora_final<<".\n";
     }
-    cout << "\nQUINTA-FEIRA:\n\n";
-    for(int i = 0;i<quintas.size();i++){
-        cout << "\t- UC: " << quintas[i].second<<" Tipo de aula: "<< quintas[i].first.tipo_aula <<" Hora de inicio: "<<quintas[i].first.hora_inicio<<" Hora final: "<<quintas[i].first.hora_final<<".\n";
+    for(int i = 0;i<quintas.size() && cout << "\nQuinta-feira:\n\n";i++){
+        cout << "\t- UC: " << quintas[i].second<<" Tipo de aula: "<< convertTipoAula(quintas[i].first.tipo_aula) <<" Hora de inicio: "<<quintas[i].first.hora_inicio<<" Hora final: "<<quintas[i].first.hora_final<<".\n";
     }
-    cout << "\nSEXTA-FEIRA:\n\n";
-    for(int i = 0;i<sextas.size();i++){
-        cout << "\t- UC: " << sextas[i].second<<" Tipo de aula: "<< sextas[i].first.tipo_aula <<" Hora de inicio: "<<sextas[i].first.hora_inicio<<" Hora final: "<<sextas[i].first.hora_final<<".\n";
+    for(int i = 0;i<sextas.size() && cout << "\nSexta-feita:\n\n";i++){
+        cout << "\t- UC: " << sextas[i].second<<" Tipo de aula: "<< convertTipoAula(sextas[i].first.tipo_aula) <<" Hora de inicio: "<<sextas[i].first.hora_inicio<<" Hora final: "<<sextas[i].first.hora_final<<".\n";
     }
 }
 
