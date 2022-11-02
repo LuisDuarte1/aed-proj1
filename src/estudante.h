@@ -79,7 +79,13 @@ class Estudante{
          */
         void removerTurma(std::shared_ptr<Turma>& turma_remover);
 
-
+        /**
+         * @brief Retorna uma cópia do nome do estudante 
+         * 
+         * @return std::string nome do estudante
+         */
+        inline std::string getStudentName(){return nome;};
+        }
 
 };
 
@@ -93,7 +99,7 @@ class Estudante{
  * @param estudante para a quem adiciona a turma
  * @param turma a adicionar
  */
-void adicionarEstudanteTurma(std::set<Estudante>& e_set, Estudante& estudante, std::shared_ptr<Turma> turma);
+void adicionarEstudanteTurma(std::set<Estudante>& e_set, Estudante estudante, std::shared_ptr<Turma> turma);
 
 
 
@@ -107,6 +113,6 @@ void adicionarEstudanteTurma(std::set<Estudante>& e_set, Estudante& estudante, s
  * @param estudante para a quem remove a turma
  * @param turma a remover
  */
-void removerEstudanteTurma(std::set<Estudante>& e_set,Estudante& estudante ,std::shared_ptr<Turma> turma);
+void removerEstudanteTurma(std::set<Estudante>& e_set,Estudante estudante ,std::shared_ptr<Turma> turma);
 
 #endif
