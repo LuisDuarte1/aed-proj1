@@ -7,6 +7,8 @@
 #include <iostream>
 #include <bits/stdc++.h>
 #include "slot.h"
+#include "turma.h"
+#include "estudante.h"
 using namespace std;
 
 
@@ -21,7 +23,7 @@ class menu {
         void UCandTurmaandAno();
         void estudantesmaisnucs();
         void pedidosalteracao();
-        void printhorario(list<Slot> horarios);
+        void printhorario(list<std::shared_ptr<Turma>> horarios);
 };
 
 

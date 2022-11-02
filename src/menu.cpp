@@ -37,6 +37,7 @@ void menu::estudante(){
         return menu::estudante();
     }
     nestudante="up"+nestudante;
+
     //Incompleto
 }
 void menu::UCandTurmaandAno(){
@@ -50,12 +51,13 @@ void menu::UCandTurmaandAno(){
         case 1: {
             string ncurso;
             cout << "O codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
-                    "Exemplo:LEIC017\n"
+                    "Exemplo:L.EIC017\n"
                     "Por favor, insira o NUMERO correspondente a UC\n"
                     "Nota:Não se esqueca dos 0's a esquerda.\n";
             cin >> ncurso;
-            ncurso = "LEIC" + ncurso;
+            ncurso = "L.EIC" + ncurso;
             //Incompleto
+            break;
 
         }
         case 2: {
@@ -73,9 +75,11 @@ void menu::UCandTurmaandAno(){
             switch(code){
                 case 1:{
                     //Incompleto
+                    break;
                 }
                 case 2:{
                     //Incompleto
+                    break;
                 }
                 default:{
                     cout << "O numero que inseriu nao foi aceite, por favor insira um numero valido\n";
@@ -83,12 +87,14 @@ void menu::UCandTurmaandAno(){
                 }
             }
             //Incompleto
+            break;
         }
         case 3: {
             string nano;
             cout << "Por favor insira o ano em questao:\n";
             cin >> nano;
             //Incompleto
+            break;
         }
         default: {
             cout << "O numero que inseriu nao foi aceite, por favor insira um numero valido\n";
@@ -149,6 +155,7 @@ void menu::pedidosalteracao(){
                      "Por favor insira o codigo da UC pretendida:\n";
             cin>>UC;
             //Incompleto
+            break;
         }
         case 2:{
             string nestudante;
@@ -172,6 +179,7 @@ void menu::pedidosalteracao(){
                      "Por favor insira o codigo da UC.\n";
             cin>>UC;
             //Incompleto
+            break;
         }
         case 3:{
             string nestudante;
@@ -195,6 +203,7 @@ void menu::pedidosalteracao(){
                      "Por favor insira o codigo da UC.\n";
             cin>>UC;
             //Incompleto
+            break;
         }
         case 4:{
             int numero;
@@ -222,24 +231,40 @@ void menu::pedidosalteracao(){
                          "Por favor insira o codigo da UC.\n";
                 cin>>UC;
                 //Incompleto
+
             }
             //Incompleto
+            break;
         }
 
     }
 }
-bool compareinicio(Slot a1,Slot a2){
+bool compareinicio(Turma a1,Turma a2){
     return(a1.hora_inicio < a2.hora_inicio);
 }
-void menu::printhorario(list<Slot> horarios) {
-    cout << "    Horas    |    Segunda    |    Terca    |    Quarta    |    Quinta    |    Sexta    |";
-    float inicial = 8.00;
-    float final = 8.5;
-    horarios.sort(compareinicio);
-
-
-
-
-
+void menu::printhorario(list<shared_ptr<Turma>> horarios) {
+    list<shared_ptr<Turma>> segundas;
+    list<shared_ptr<Turma>> tercas;
+    list<shared_ptr<Turma>> quartas;
+    list<shared_ptr<Turma>> quintas;
+    list<shared_ptr<Turma>> sextas;
+    for(auto it=horarios.begin();it !=horarios.end();++it){
+        if(it->->dia == "Monday"){
+            segundas.push_back(*it);
+        }
+        else if(it->Slot->dia == "Tuesday"){tercas.push_back(*it);}
+        else if(it->Slot == "Wednesday"){quartas.push_back(*it);}
+        else if(it->dia == "Thursday"){quintas.push_back(*it);}
+        else if(it->dia == "Friday"){sextas.push_back(*it);}
+    }
+    segundas.sort(compareinicio);
+    tercas.sort(compareinicio);
+    quartas.sort(compareinicio);
+    quintas.sort(compareinicio);
+    sextas.sort(compareinicio);
+    cout << "SEGUNDA-FEIRA:\n\n";
+    for(auto it=segundas.begin();it!=segundas.end();++it){
+        cout >> "- UC: " >> it->
+    }
 }
 
