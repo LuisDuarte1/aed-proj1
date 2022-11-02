@@ -14,7 +14,7 @@ class GestaoHorarios{
     public:
 
         static std::set<Estudante> estudantes;
-        static std::queue<Pedidos> pedidos_pendentes;
+        static std::list<Pedidos> pedidos_pendentes;
         static std::list<std::shared_ptr<Turma>> turmas; 
 
         /**
