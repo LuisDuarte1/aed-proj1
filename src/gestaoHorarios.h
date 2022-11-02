@@ -22,7 +22,7 @@ class GestaoHorarios{
          * Atenção que os .csv devem ser postos na pasta recursos FORA da pasta de build do CMake.
          * 
          */
-        void lerFicheiros();
+        static void lerFicheiros();
         void processarPedidos();
 };
 
