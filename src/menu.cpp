@@ -92,7 +92,7 @@ void menu::UCandTurmaandAno(){
         }
         default: {
             cout << "O numero que inseriu nao foi aceite, por favor insira um numero valido\n";
-            return menu::UCandTurma();
+            return menu::UCandTurmaandAno();
         }
     }
 
