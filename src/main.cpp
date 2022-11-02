@@ -2,10 +2,9 @@
 #include "gestaoHorarios.h"
 #include "menu.h"
 int main(){
-    GestaoHorarios gestao;
-    gestao.lerFicheiros();
-    auto it = gestao.estudantes.begin();
-    while(it != gestao.estudantes.end()){
+    GestaoHorarios::lerFicheiros();
+    auto it = GestaoHorarios::estudantes.begin();
+    while(it != GestaoHorarios::estudantes.end()){
         std::cout << (*it).getStudentNumber() <<" "<< (*it).getTurmas().size() << "\n";
         it++;
 

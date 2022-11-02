@@ -45,7 +45,7 @@ void GestaoHorarios::lerFicheiros(){
         (*t).estudantes = 0;
 
 
-        this->turmas.push_back(t);
+        GestaoHorarios::turmas.push_back(t);
     }
 
 
@@ -134,11 +134,11 @@ void GestaoHorarios::lerFicheiros(){
 
         Estudante& e = temp;
 
-        auto e_it = this->estudantes.find(temp);
-        if(e_it != this->estudantes.end()){
+        auto e_it = GestaoHorarios::estudantes.find(temp);
+        if(e_it != GestaoHorarios::estudantes.end()){
                 e = *e_it;
         } else{
-            auto insert_it = this->estudantes.insert(temp);
+            auto insert_it = GestaoHorarios::estudantes.insert(temp);
             e = *insert_it.first;
         }
         Turma t_cmp;
@@ -148,15 +148,15 @@ void GestaoHorarios::lerFicheiros(){
 
         //ver se a turma é válida
         bool valida = false;
-        auto t_it = this->turmas.begin();
-        for(;t_it != this->turmas.end(); t_it++){
+        auto t_it = GestaoHorarios::turmas.begin();
+        for(;t_it != GestaoHorarios::turmas.end(); t_it++){
             if(*(*t_it) == t_cmp){
                 valida = true;
                 break;
             }
         }
         if(valida){
-            adicionarEstudanteTurma(this->estudantes, e, *t_it);
+            adicionarEstudanteTurma(GestaoHorarios::estudantes, e, *t_it);
         } else {
             std::cout << "Turma do estudante nao e valida... Ignorando esta entry.\n";
             //TODO (luisd): usar ostream overloads para dar melhor print ao erro
