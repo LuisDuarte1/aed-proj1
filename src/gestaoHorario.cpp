@@ -4,6 +4,11 @@
 #include <sstream>
 #include <algorithm>
 
+std::set<Estudante> GestaoHorarios::estudantes;
+std::list<std::shared_ptr<Turma>> GestaoHorarios::turmas;
+std::list<Pedido> GestaoHorarios::pedidos_pendentes;
+std::list<Pedido> GestaoHorarios::pedidos_recusados;
+
 std::string& trim_string(std::string& str) {
     #ifndef _WIN32
         /*

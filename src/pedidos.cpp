@@ -2,30 +2,45 @@
 
 #include <iostream>
 #include "pedidos.h"
+#include "estudante.h"
+#include "gestaoHorarios.h"
 
-Pedidos::Pedidos(int numero_up, TipoPedido tipo, Turma turma){
-    this->numero_up=numero_up;
+Pedido::Pedido(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma){
+    this->nup=numero_up;
     this->tipo=tipo;
     if(tipo==TipoPedido::Adicionar){
-        (*this->turma_inicio)=turma;}
+        this->turma_inicio=turma;}
     else{
-        (*this->turma_final)=turma;}
+        this->turma_final=turma;}
 }
 
-Pedidos::Pedidos(int numero_up, TipoPedido tipo, Turma turma_inicio, Turma turma_final){
-    this->numero_up=numero_up;
+Pedido::Pedido(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma_inicio, std::shared_ptr<Turma> turma_final){
+    this->nup=numero_up;
     this->tipo=tipo;
-    (*this->turma_inicio)=turma_inicio;
-    (*this->turma_final)=turma_final;
+    this->turma_inicio=turma_inicio;
+    this->turma_final=turma_final;
 }
 
-bool Pedidos::desiquilibrio(){
-    if(this->turma_inicio->getestudantes()<this->turma_final->getestudantes()+3)
-        return true;
-    return false;
+bool ConjuntoPedidos::desiquilibrio(){
 }
 
-void Pedidos::adicionar_turma(){
-    this->turma_final->addestudantes();
+void Pedido::adicionar_turma(){
+    auto it = GestaoHorarios::estudantes.find(Estudante(this->nup, ""));
+    adicionarEstudanteTurma(GestaoHorarios::estudantes,*it,turma_final);
+}
+
+void Pedido::remover_turma(){
+    auto it = GestaoHorarios::estudantes.find(Estudante(this->nup, ""));
+    removerEstudanteTurma(GestaoHorarios::estudantes,*it,turma_inicio);
+}
+
+void Pedido::alterar_turma(){
+    auto it = GestaoHorarios::estudantes.find(Estudante(this->nup, ""));
+    removerEstudanteTurma(GestaoHorarios::estudantes,*it,turma_inicio);
+    adicionarEstudanteTurma(GestaoHorarios::estudantes,*it,turma_final);
+}
+
+bool ConjuntoPedidos::conflito(){
+
 
 }
