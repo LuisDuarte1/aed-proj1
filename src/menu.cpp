@@ -235,7 +235,7 @@ void menu::printhorario(list<Slot> horarios) {
     cout << "    Horas    |    Segunda    |    Terca    |    Quarta    |    Quinta    |    Sexta    |";
     float inicial = 8.00;
     float final = 8.5;
-    sort(horarios.begin(),horarios.end(), compareinicio());
+    horarios.sort(compareinicio);
 
 
 
