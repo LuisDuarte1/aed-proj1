@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include <set>
 
 #include "turma.h"
 
@@ -81,5 +82,31 @@ class Estudante{
 
 
 };
+
+/**
+ * @brief Função global para adicionar um estudante a uma turma porque é impossível mutar um estudante 
+ * diretamente de um set. Para isso mutamos o estudante, removemos esse do set e voltamos a adicionar.
+ * Complexidade: log(n) já que o std::set garante o balanceamento da tree
+ * 
+ * 
+ * @param e_set que contem todos os estudantes
+ * @param estudante para a quem adiciona a turma
+ * @param turma a adicionar
+ */
+void adicionarEstudanteTurma(std::set<Estudante>& e_set, Estudante& estudante, std::shared_ptr<Turma> turma);
+
+
+
+/**
+ * @brief Função global para remover um estudante a uma turma porque é impossível mutar um estudante 
+ * diretamente de um set. Para isso mutamos o estudante, removemos esse do set e voltamos a adicionar.
+ * Complexidade: log(n) já que o std::set garante o balanceamento da tree
+ * 
+ * 
+ * @param e_set que contem todos os estudantes
+ * @param estudante para a quem remove a turma
+ * @param turma a remover
+ */
+void removerEstudanteTurma(std::set<Estudante>& e_set,Estudante& estudante ,std::shared_ptr<Turma> turma);
 
 #endif

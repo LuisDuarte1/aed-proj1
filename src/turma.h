@@ -31,6 +31,8 @@ public:
     int getestudantes();
     void addestudantes();
     void removeestudantes();
+    std::list<Slot> getaulas();
+    std::string getuc_code();
 };
 
 #endif

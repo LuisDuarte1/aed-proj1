@@ -23,6 +23,11 @@ struct Slot{
     float hora_inicio;
     float hora_final;
     Tipo tipo_aula;
+public:
+    std::string getdia();
+    float geth_inicio();
+    float geth_final();
+    Tipo gettipo_aula();
 };
 
 

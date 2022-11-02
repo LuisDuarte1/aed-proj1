@@ -14,3 +14,11 @@ void Turma::addestudantes(){
 void Turma::removeestudantes(){
     this->estudantes--;
 }
+
+std::list<Slot> Turma::getaulas(){
+    return this->aulas;
+}
+
+std::string Turma::getuc_code(){
+    return uc_code;
+}

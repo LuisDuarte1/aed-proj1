@@ -148,18 +148,19 @@ void GestaoHorarios::lerFicheiros(){
 
         //ver se a turma é válida
         bool valida = false;
-        for(auto t_it = this->turmas.begin(); t_it != this->turmas.end(); t_it++){
+        auto t_it = this->turmas.begin();
+        for(;t_it != this->turmas.end(); t_it++){
             if(*(*t_it) == t_cmp){
                 valida = true;
-                e.adicionarTurma((*t_it));
                 break;
             }
         }
-        if(!valida){
+        if(valida){
+            adicionarEstudanteTurma(this->estudantes, e, *t_it);
+        } else {
             std::cout << "Turma do estudante nao e valida... Ignorando esta entry.\n";
             //TODO (luisd): usar ostream overloads para dar melhor print ao erro
             continue;
         }
-
     }
 }

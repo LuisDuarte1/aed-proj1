@@ -12,9 +12,10 @@
 
 class GestaoHorarios{
     public:
-        std::set<Estudante> estudantes;
-        std::queue<Pedidos> pedidos_pendentes;
-        std::list<std::shared_ptr<Turma>> turmas; 
+        static std::set<Estudante> estudantes;
+        static std::list<Pedidos> pedidos_pendentes;
+        static std::list<std::shared_ptr<Turma>> turmas;
+        static std::list<Pedidos> pedidos_recusados;
 
         /**
          * @brief Lê os ficheiros .csv para carregar os estudantes. 
@@ -22,6 +23,7 @@ class GestaoHorarios{
          * 
          */
         void lerFicheiros();
+        void processarPedidos();
 };
 
 #endif
