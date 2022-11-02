@@ -2,6 +2,9 @@
 // Created by wwwjo on 24/10/2022.
 //
 #include "menu.h"
+
+using namespace std;
+
 void menu::iniciar() {
     int n;
     cout <<"Sistema de horarios para LEIC\n"
@@ -13,17 +16,22 @@ void menu::iniciar() {
     cin >> n;
     switch(n){
         case 1:
-            return menu::estudante();
+            menu::estudante();
+            break;
         case 2:
-            return menu::UCandTurmaandAno();
+            menu::UCandTurmaandAno();
+            break;
         case 3:
-            return menu::estudantesmaisnucs();
+            menu::estudantesmaisnucs();
+            break;
         case 4:
-            return menu::pedidosalteracao();
+            menu::pedidosalteracao();
+            break;
         default:
             cout << "O numero que inseriu nao foi aceite, por favor insira um numero valido\n";
             return menu::iniciar();
     }
+    menu::iniciar();
 }
 
 void menu::estudante(){
@@ -43,39 +51,123 @@ void menu::UCandTurmaandAno(){
     int n;
     cout<<"Por favor, selecione ao que pretende relativamente a pesquisa(insira o numero pretendido):\n"
           "1-UC\n"
-          "2-Turma\n"
-          "3-Ano\n";
+          "2-Turma\n\n";
     cin>>n;
     switch(n){
         case 1: {
             string ncurso;
-            cout << "O codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
-                    "Exemplo:LEIC017\n"
-                    "Por favor, insira o NUMERO correspondente a UC\n"
-                    "Nota:Não se esqueca dos 0's a esquerda.\n";
+            cout << "\nO codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
+                    "Exemplo:L.EIC017\n";
             cin >> ncurso;
-            ncurso = "LEIC" + ncurso;
-            //Incompleto
+            std::vector<std::shared_ptr<Turma>> turmas_curso;
+            copy_if(GestaoHorarios::turmas.begin(), 
+                GestaoHorarios::turmas.end(), 
+                std::back_inserter(turmas_curso),
+                [ncurso](std::shared_ptr<Turma> turma){
+                    return turma->uc_code == ncurso;
+                }
+            );
 
+            if(turmas_curso.size() == 0){
+                cout << "\n Nao foram encontradas correspondencias com a turma: " << ncurso << "\n"
+                    "Tente novamente...";
+                return menu::UCandTurmaandAno();
+            }
+
+            cout << "\nSelecione as seguintes opções:\n"
+                "1 - Nº de estudantes em cada turma\n"
+                "2 - Horarios de cada turma\n"
+                "3 - Estudantes de cada turma\n\n"
+                "Selecione a opção: ";
+            
+            int opcao = -1;
+            cin >> opcao;
+
+            switch (opcao)
+            {
+            case 1: 
+                for(auto i : turmas_curso){
+                    std::cout<< i->class_code << " " <<  i->getestudantes() << "\n";
+                }
+                break;
+            case 2:
+                for(auto i : turmas_curso){
+                    menu::printhorario(i->aulas);
+                }
+                break;
+
+            case 3:
+                for(auto i: turmas_curso){
+                    std::cout << "Turma: " << i->class_code << "\n";
+                    std::vector<Estudante> turma_estudantes;
+                    copy_if(GestaoHorarios::estudantes.begin(), GestaoHorarios::estudantes.end(),
+                        std::back_inserter(turma_estudantes),
+                        [&i](Estudante e){
+                            auto e_turmas = e.getTurmas();
+                            return std::find(e_turmas.begin(), e_turmas.end(), i) != e_turmas.end();
+                        }
+
+                    );
+                    if(turma_estudantes.size() == 0){
+                        std::cout << "ATENÇAO: ESTA TURMA NÃO TEM ESTUDANTES!\n";
+                        continue;
+                    }
+                    for(Estudante estudante : turma_estudantes){
+                        std::cout << "\t up" << estudante.getStudentNumber() << " : " << estudante.getStudentName() << "\n";
+                    }
+                }
+                break;
+
+            default:
+                break;
+            }
+
+
+
+            break;
         }
         case 2: {
             string nturma;
+            string nuc;
             int code;
             cout << "O codigo de uma turma e composta pelo ano da turma, a sigla do curso e um determinado numero\n"
                     "Exemplo:1LEIC01\n"
                     "Por favor, insira o CODIGO da turma em questão\n"
-                    "Nota:Não se esqueca dos 0's a esquerda.\n";
+                    "Nota:Não se esqueca dos 0's a esquerda.\n"
+                    "Input: ";
             cin >> nturma;
+
+            cout << "\nO codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
+                    "Exemplo:L.EIC017\n";
+            cin >> nuc;
+            Turma t {nturma, nuc};
+            std::shared_ptr<Turma> t_p;
+            bool found = false;
+            for(auto it = GestaoHorarios::turmas.begin(); it != GestaoHorarios::turmas.end(); it++){
+                if(*(*it) == t){
+                    t_p = *it;
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                cout << "Nao foi encontrado uma turma correspondente... tente outra vez.\n";
+                return menu::UCandTurmaandAno();
+            }
+
             cout<<"\nPretende a ocupacao da turma ou o horario:\n"
                   "1-Ocupacao"
                   "2-Horario";
             cin >> code;
             switch(code){
                 case 1:{
-                    //Incompleto
+                    cout << "\n" << t_p->class_code <<":" <<t_p->uc_code << " :: " << t_p->estudantes << " estudantes...\n";
+                    break;
                 }
                 case 2:{
-                    //Incompleto
+                    cout <<"\n Horario de " << t_p->class_code <<":" <<t_p->uc_code << ":\n";
+                    menu::printhorario(t_p->aulas);
+                    break;
                 }
                 default:{
                     cout << "O numero que inseriu nao foi aceite, por favor insira um numero valido\n";
@@ -83,12 +175,7 @@ void menu::UCandTurmaandAno(){
                 }
             }
             //Incompleto
-        }
-        case 3: {
-            string nano;
-            cout << "Por favor insira o ano em questao:\n";
-            cin >> nano;
-            //Incompleto
+            break;
         }
         default: {
             cout << "O numero que inseriu nao foi aceite, por favor insira um numero valido\n";

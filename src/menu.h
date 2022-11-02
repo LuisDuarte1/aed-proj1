@@ -6,6 +6,10 @@
 #define MENU_H
 #include <iostream>
 #include <bits/stdc++.h>
+
+
+#include "gestaoHorarios.h"
+#include "turma.h"
 #include "slot.h"
 using namespace std;
 

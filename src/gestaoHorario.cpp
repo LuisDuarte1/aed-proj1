@@ -1,4 +1,5 @@
 #include "gestaoHorarios.h"
+#include "estudante.h"
 
 #include <fstream>
 #include <sstream>

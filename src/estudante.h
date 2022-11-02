@@ -85,7 +85,7 @@ class Estudante{
          * @return std::string nome do estudante
          */
         inline std::string getStudentName(){return nome;};
-        }
+        
 
 };
 
