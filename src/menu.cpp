@@ -239,32 +239,51 @@ void menu::pedidosalteracao(){
 
     }
 }
-bool compareinicio(Turma a1,Turma a2){
-    return(a1.hora_inicio < a2.hora_inicio);
+bool compareinicio(pair<Slot,string> a, pair<Slot,string> b){
+    return(a.first.hora_inicio < b.first.hora_inicio);
 }
 void menu::printhorario(list<shared_ptr<Turma>> horarios) {
-    list<shared_ptr<Turma>> segundas;
-    list<shared_ptr<Turma>> tercas;
-    list<shared_ptr<Turma>> quartas;
-    list<shared_ptr<Turma>> quintas;
-    list<shared_ptr<Turma>> sextas;
+    vector<pair<Slot, string>> segundas;
+    vector<pair<Slot, string>> tercas;
+    vector<pair<Slot, string>> quartas;
+    vector<pair<Slot, string>> quintas;
+    vector<pair<Slot, string>> sextas;
     for(auto it=horarios.begin();it !=horarios.end();++it){
-        if(it->->dia == "Monday"){
-            segundas.push_back(*it);
+        list<Slot> f = (*it)->getaulas();
+        for(auto iter=f.begin();iter !=f.begin();++iter){
+            if(iter->dia == "Monday"){
+                segundas.push_back(make_pair(*iter, (*it)->uc_code));
+            }
+            else if(iter->dia == "Tuesday"){tercas.push_back(make_pair(*iter, (*it)->uc_code));}
+            else if(iter->dia == "Wednesday"){quartas.push_back(make_pair(*iter, (*it)->uc_code));}
+            else if(iter->dia == "Thursday"){quintas.push_back(make_pair(*iter, (*it)->uc_code));}
+            else if(iter->dia == "Friday"){sextas.push_back(make_pair(*iter, (*it)->uc_code));}
         }
-        else if(it->Slot->dia == "Tuesday"){tercas.push_back(*it);}
-        else if(it->Slot == "Wednesday"){quartas.push_back(*it);}
-        else if(it->dia == "Thursday"){quintas.push_back(*it);}
-        else if(it->dia == "Friday"){sextas.push_back(*it);}
     }
-    segundas.sort(compareinicio);
-    tercas.sort(compareinicio);
-    quartas.sort(compareinicio);
-    quintas.sort(compareinicio);
-    sextas.sort(compareinicio);
-    cout << "SEGUNDA-FEIRA:\n\n";
-    for(auto it=segundas.begin();it!=segundas.end();++it){
-        cout >> "- UC: " >> it->
+    sort(segundas.begin(),segundas.end(), compareinicio);
+    sort(tercas.begin(),tercas.end(), compareinicio);
+    sort(quintas.begin(),quintas.end(), compareinicio);
+    sort(quartas.begin(),quartas.end(), compareinicio);
+    sort(sextas.begin(),sextas.end(), compareinicio);
+    cout << "\nSEGUNDA-FEIRA:\n\n";
+    for(int i = 0;i<segundas.size();i++){
+        cout << "\t- UC: " << segundas[i].second<<" Tipo de aula: "<< segundas[i].first.tipo_aula <<" Hora de inicio: "<<segundas[i].first.hora_inicio<<" Hora final: "<<segundas[i].first.hora_final<<".\n";
+    }
+    cout << "\nTERCA-FEIRA:\n\n";
+    for(int i = 0;i<tercas.size();i++){
+        cout << "\t- UC: " << tercas[i].second<<" Tipo de aula: "<< tercas[i].first.tipo_aula <<" Hora de inicio: "<<tercas[i].first.hora_inicio<<" Hora final: "<<tercas[i].first.hora_final<<".\n";
+    }
+    cout << "\nQUARTA-FEIRA:\n\n";
+    for(int i = 0;i<quartas.size();i++){
+        cout << "\t- UC: " << quartas[i].second<<" Tipo de aula: "<< quartas[i].first.tipo_aula <<" Hora de inicio: "<<quartas[i].first.hora_inicio<<" Hora final: "<<quartas[i].first.hora_final<<".\n";
+    }
+    cout << "\nQUINTA-FEIRA:\n\n";
+    for(int i = 0;i<quintas.size();i++){
+        cout << "\t- UC: " << quintas[i].second<<" Tipo de aula: "<< quintas[i].first.tipo_aula <<" Hora de inicio: "<<quintas[i].first.hora_inicio<<" Hora final: "<<quintas[i].first.hora_final<<".\n";
+    }
+    cout << "\nSEXTA-FEIRA:\n\n";
+    for(int i = 0;i<sextas.size();i++){
+        cout << "\t- UC: " << sextas[i].second<<" Tipo de aula: "<< sextas[i].first.tipo_aula <<" Hora de inicio: "<<sextas[i].first.hora_inicio<<" Hora final: "<<sextas[i].first.hora_final<<".\n";
     }
 }
 
