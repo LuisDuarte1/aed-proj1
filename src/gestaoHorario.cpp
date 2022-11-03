@@ -262,13 +262,13 @@ void GestaoHorarios::guardarFicheiros(){
 
 
 void GestaoHorarios::aceitarpedidos(ConjuntoPedidos conjuntopedidos) {
-    auto it = GestaoHorarios::estudantes.find(Estudante(conjuntopedidos.lista_pedidos.begin()->getnup(), ""));
+    auto it = GestaoHorarios::estudantes.find(Estudante(conjuntopedidos.lista_pedidos.begin()->getStudentNumber(), ""));
     for(Pedido pedido : conjuntopedidos.lista_pedidos){
-        if(pedido.gettipo()==Adicionar) adicionarEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.get_turmaf());
-        else if(pedido.gettipo()==Remover) removerEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.get_turmai());
+        if(pedido.getTipoPedido()==Adicionar) adicionarEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.getTurmaFinal());
+        else if(pedido.getTipoPedido()==Remover) removerEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.getTurmaInicio());
         else{
-            adicionarEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.get_turmaf());
-            removerEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.get_turmai());}
+            adicionarEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.getTurmaFinal());
+            removerEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.getTurmaInicio());}
     }
 }
 

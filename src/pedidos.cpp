@@ -24,27 +24,13 @@ Pedido::Pedido(int numero_up, TipoPedido tipo, std::shared_ptr<Turma> turma_inic
     this->turma_final=turma_final;
 }
 
-std::shared_ptr<Turma> Pedido::get_turmaf(){
-    return turma_final;
-}
-std::shared_ptr<Turma> Pedido::get_turmai(){
-    return turma_inicio;
-}
-
-TipoPedido Pedido::gettipo(){
-    return this->tipo;
-}
-
-int Pedido::getnup() {
-    return nup;
-}
 
 std::list<Pedido> ConjuntoPedidos::desiquilibrio(){
     std::list<Pedido> ret;
     for(Pedido pedido : lista_pedidos){
-        if(pedido.gettipo()==Remover) continue;
+        if(pedido.getTipoPedido()==Remover) continue;
         std::vector<std::shared_ptr<Turma>> turmas_curso;
-        std::string uc_c = pedido.get_turmaf()->getuc_code();
+        std::string uc_c = pedido.getTurmaFinal()->getuc_code();
         std::copy_if(GestaoHorarios::turmas.begin(),
                      GestaoHorarios::turmas.end(),
                      std::back_inserter(turmas_curso),
@@ -55,14 +41,14 @@ std::list<Pedido> ConjuntoPedidos::desiquilibrio(){
         for(std::shared_ptr<Turma> turma : turmas_curso){
             if(turma->getestudantes()<min) min = turma->getestudantes();
         }
-        if(pedido.gettipo()==TipoPedido::Adicionar){
-            if(min+3<pedido.get_turmaf()->getestudantes())
+        if(pedido.getTipoPedido()==TipoPedido::Adicionar){
+            if(min+3<pedido.getTurmaFinal()->getestudantes())
                 ret.push_back(pedido);
             }
-        else if(pedido.get_turmai()->getestudantes()!=min){
-            if(min+3<pedido.get_turmaf()->getestudantes()) ret.push_back(pedido);}
+        else if(pedido.getTurmaInicio()->getestudantes()!=min){
+            if(min+3<pedido.getTurmaFinal()->getestudantes()) ret.push_back(pedido);}
         else{
-            if(min+2<pedido.get_turmaf()->getestudantes()) ret.push_back(pedido);
+            if(min+2<pedido.getTurmaFinal()->getestudantes()) ret.push_back(pedido);
         }}
     return ret;
 }
@@ -85,21 +71,21 @@ void Pedido::alterar_turma(){
 
 bool ConjuntoPedidos::conflito(){
     if(lista_pedidos.size() == 0 ) return true;
-    auto it = GestaoHorarios::estudantes.find(Estudante(lista_pedidos.begin()->getnup(), ""));
+    auto it = GestaoHorarios::estudantes.find(Estudante(lista_pedidos.begin()->getStudentNumber(), ""));
     std::list<std::shared_ptr<Turma>> novasturmas = it->getTurmas();
     for(Pedido pedido : lista_pedidos){
-        if(pedido.gettipo()==Remover){
-            novasturmas.remove(pedido.get_turmai());}
-        else if(pedido.gettipo()==Adicionar){
-            novasturmas.push_back(pedido.get_turmaf());}
+        if(pedido.getTipoPedido()==Remover){
+            novasturmas.remove(pedido.getTurmaInicio());}
+        else if(pedido.getTipoPedido()==Adicionar){
+            novasturmas.push_back(pedido.getTurmaFinal());}
         else{
-            novasturmas.push_back(pedido.get_turmaf());
-            novasturmas.remove(pedido.get_turmai());}
+            novasturmas.push_back(pedido.getTurmaFinal());
+            novasturmas.remove(pedido.getTurmaInicio());}
     }
     std::list<std::pair<Slot, std::shared_ptr<Turma>>> novohorario;
     for(std::shared_ptr<Turma> turma : novasturmas){
         for(Slot aula : turma->getaulas()){
-            if(aula.gettipo_aula()!=Teorica)
+            if(aula.getTipoPedido_aula()!=Teorica)
                 novohorario.push_back(std::make_pair(aula, turma));}}
     for(auto aula1 : novohorario){
         for(auto aula2 : novohorario){

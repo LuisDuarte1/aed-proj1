@@ -9,6 +9,6 @@ float Slot::geth_inicio(){
 float Slot::geth_final(){
     return hora_final;
 }
-Tipo Slot::gettipo_aula(){
+Tipo Slot::getTipoPedido_aula(){
     return tipo_aula;
 }

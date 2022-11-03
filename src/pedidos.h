@@ -48,10 +48,6 @@ public:
      */
     void remover_turma();
     bool operator==(const Pedido& p2);
-    std::shared_ptr<Turma> get_turmaf();
-    std::shared_ptr<Turma> get_turmai();
-    TipoPedido gettipo();
-    int getnup();
     /**
      * @brief Alterna a turma de um determinado estudante de uma UC
      */

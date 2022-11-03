@@ -43,7 +43,7 @@ public:
      * @brief Dá return ao "Tipo" de uma determinada aula (Teórico-Prática,Prática Laboratorial,Teórica)
      * @return Tipo tipo_aula
      */
-    Tipo gettipo_aula();
+    Tipo getTipoPedido_aula();
 };
 
 
