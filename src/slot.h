@@ -24,9 +24,25 @@ struct Slot{
     float hora_final;
     Tipo tipo_aula;
 public:
+    /**
+     * @brief Dá return ao dia (da semana Ex: "Monday", "Tuesday", etc...) de uma determinada aula.
+     * @return std::string dia
+     */
     std::string getdia();
+    /**
+     * @brief Dá return á hora do ínicio de uma determinada aula
+     * @return float hora_inicio
+     */
     float geth_inicio();
+    /**
+     * @brief Dá return á hora final de uma determinada aula
+     * @return float hora_final
+     */
     float geth_final();
+    /**
+     * @brief Dá return ao "Tipo" de uma determinada aula (Teórico-Prática,Prática Laboratorial,Teórica)
+     * @return Tipo tipo_aula
+     */
     Tipo gettipo_aula();
 };
 

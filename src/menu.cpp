@@ -7,12 +7,12 @@ using namespace std;
 
 void menu::iniciar() {
     int n;
-    cout <<"Sistema de horarios para LEIC\n"
-                  "Por favor, selecione a opção desejada, introduzindo o numero correspondente ao que pretende:\n\n"
+    cout <<"\nSistema de horarios para LEIC\n"
+                  "Por favor, selecione a opcao desejada, introduzindo o numero correspondente ao que pretende:\n\n"
                   "1-Procura por horario de Estudante:\n"
-                  "2-Procura por UC/Turma(Horario ou Ocupacao)/Ano:\n"
+                  "2-Procura por UC/Turma(Horario ou Ocupacao):\n"
                   "3-Procura por estudantes com mais de n UCs:\n"
-                  "4-Pedido de alteração de turma:\n";
+                  "4-Pedido de alteracao de turma:\n";
     cin >> n;
     switch(n){
         case 1:
@@ -60,12 +60,12 @@ void menu::UCandTurmaandAno(){
     int n;
     cout<<"Por favor, selecione ao que pretende relativamente a pesquisa(insira o numero pretendido):\n"
           "1-UC\n"
-          "2-Turma\n\n";
+          "2-Turma\n";
     cin>>n;
     switch(n){
         case 1: {
             string ncurso;
-            cout << "\nO codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
+            cout << "O codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
                     "Exemplo:L.EIC017\n";
             cin >> ncurso;
             std::vector<std::shared_ptr<Turma>> turmas_curso;
@@ -78,16 +78,16 @@ void menu::UCandTurmaandAno(){
             );
 
             if(turmas_curso.size() == 0){
-                cout << "\n Nao foram encontradas correspondencias com a turma: " << ncurso << "\n"
+                cout << "Nao foram encontradas correspondencias com a turma: " << ncurso << "\n"
                     "Tente novamente...";
                 return menu::UCandTurmaandAno();
             }
 
-            cout << "\nSelecione as seguintes opções:\n"
-                "1 - Nº de estudantes em cada turma\n"
+            cout << "Selecione as seguintes opcoes:\n"
+                "1 - Numero de estudantes em cada turma\n"
                 "2 - Horarios de cada turma\n"
                 "3 - Estudantes de cada turma\n\n"
-                "Selecione a opção: ";
+                "Selecione a opcao:\n ";
             
             int opcao = -1;
             cin >> opcao;
@@ -145,12 +145,12 @@ void menu::UCandTurmaandAno(){
             int code;
             cout << "O codigo de uma turma e composta pelo ano da turma, a sigla do curso e um determinado numero\n"
                     "Exemplo:1LEIC01\n"
-                    "Por favor, insira o CODIGO da turma em questão\n"
-                    "Nota:Não se esqueca dos 0's a esquerda.\n"
+                    "Por favor, insira o CODIGO da turma em questao\n"
+                    "Nota:Nao se esqueca dos 0's a esquerda.\n"
                     "Input: ";
             cin >> nturma;
 
-            cout << "\nO codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
+            cout << "O codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
                     "Exemplo:L.EIC017\n";
             cin >> nuc;
             Turma t {nturma, nuc};
@@ -168,9 +168,9 @@ void menu::UCandTurmaandAno(){
                 return menu::UCandTurmaandAno();
             }
 
-            cout<<"\nPretende a ocupacao da turma ou o horario:\n"
-                  "1-Ocupacao"
-                  "2-Horario";
+            cout<<"Pretende a ocupacao da turma ou o horario:\n"
+                  "1-Ocupacao\n"
+                  "2-Horario\n";
             cin >> code;
             switch(code){
                 case 1:{
@@ -346,6 +346,16 @@ std::string convertTipoAula(Tipo t){
     }
 }
 
+string ConvertHora(float hour){
+    int hora=(int)hour;
+    int minute = (int)((hour-hora)*60);
+    string minstr = to_string(minute);
+    if(minstr == "0"){ minstr += "0";}
+    string result = to_string(hora) + ":" + minstr;
+    return result;
+
+}
+
 bool compareinicio(pair<Slot,string> a, pair<Slot,string> b){
     return(a.first.hora_inicio < b.first.hora_inicio);
 }
@@ -372,21 +382,35 @@ void menu::printhorario(list<shared_ptr<Turma>> horarios) {
     sort(quintas.begin(),quintas.end(), compareinicio);
     sort(quartas.begin(),quartas.end(), compareinicio);
     sort(sextas.begin(),sextas.end(), compareinicio);
-    
-    for(int i = 0;i<segundas.size() && cout << "\nSegunda-feira:\n\n";i++){
-        cout << "\t- UC: " << segundas[i].second<<" Tipo de aula: "<< convertTipoAula(segundas[i].first.tipo_aula) <<" Hora de inicio: "<<segundas[i].first.hora_inicio<<" Hora final: "<<segundas[i].first.hora_final<<".\n";
+    if(segundas.size()>0){
+        cout <<"\nSegunda-feira:\n\n";
     }
-    for(int i = 0;i<tercas.size() && cout << "\nTerca-feira:\n\n";i++){
-        cout << "\t- UC: " << tercas[i].second<<" Tipo de aula: "<< convertTipoAula(tercas[i].first.tipo_aula) <<" Hora de inicio: "<<tercas[i].first.hora_inicio<<" Hora final: "<<tercas[i].first.hora_final<<".\n";
+    for(int i = 0;i<segundas.size();i++){
+        cout << "\t- UC: " << segundas[i].second<<" Tipo de aula: "<< convertTipoAula(segundas[i].first.tipo_aula) <<" Hora de inicio: "<<ConvertHora(segundas[i].first.hora_inicio)<<" Hora final: "<<ConvertHora(segundas[i].first.hora_final)<<".\n";
     }
-    for(int i = 0;i<quartas.size() && cout << "\nQuarta-feira:\n\n";i++){
-        cout << "\t- UC: " << quartas[i].second<<" Tipo de aula: "<< convertTipoAula(quartas[i].first.tipo_aula) <<" Hora de inicio: "<<quartas[i].first.hora_inicio<<" Hora final: "<<quartas[i].first.hora_final<<".\n";
+    if(tercas.size()>0){
+        cout <<"\nTerca-feira:\n\n";
     }
-    for(int i = 0;i<quintas.size() && cout << "\nQuinta-feira:\n\n";i++){
-        cout << "\t- UC: " << quintas[i].second<<" Tipo de aula: "<< convertTipoAula(quintas[i].first.tipo_aula) <<" Hora de inicio: "<<quintas[i].first.hora_inicio<<" Hora final: "<<quintas[i].first.hora_final<<".\n";
+    for(int i = 0;i<tercas.size();i++){
+        cout << "\t- UC: " << tercas[i].second<<" Tipo de aula: "<< convertTipoAula(tercas[i].first.tipo_aula) <<" Hora de inicio: "<<ConvertHora(tercas[i].first.hora_inicio)<<" Hora final: "<<ConvertHora(tercas[i].first.hora_final)<<".\n";
     }
-    for(int i = 0;i<sextas.size() && cout << "\nSexta-feita:\n\n";i++){
-        cout << "\t- UC: " << sextas[i].second<<" Tipo de aula: "<< convertTipoAula(sextas[i].first.tipo_aula) <<" Hora de inicio: "<<sextas[i].first.hora_inicio<<" Hora final: "<<sextas[i].first.hora_final<<".\n";
+    if(quartas.size()>0){
+        cout <<"\nQuarta-feira:\n\n";
+    }
+    for(int i = 0;i<quartas.size();i++){
+        cout << "\t- UC: " << quartas[i].second<<" Tipo de aula: "<< convertTipoAula(quartas[i].first.tipo_aula) <<" Hora de inicio: "<<ConvertHora(quartas[i].first.hora_inicio)<<" Hora final: "<<ConvertHora(quartas[i].first.hora_final)<<".\n";
+    }
+    if(quintas.size()>0){
+        cout <<"\nQuinta-feira:\n\n";
+    }
+    for(int i = 0;i<quintas.size();i++){
+        cout << "\t- UC: " << quintas[i].second<<" Tipo de aula: "<< convertTipoAula(quintas[i].first.tipo_aula) <<" Hora de inicio: "<<ConvertHora(quintas[i].first.hora_inicio)<<" Hora final: "<<ConvertHora(quintas[i].first.hora_final)<<".\n";
+    }
+    if(sextas.size()>0){
+        cout <<"\nSexta-feira:\n\n";
+    }
+    for(int i = 0;i<sextas.size();i++){
+        cout << "\t- UC: " << sextas[i].second<<" Tipo de aula: "<< convertTipoAula(sextas[i].first.tipo_aula) <<" Hora de inicio: "<<ConvertHora(sextas[i].first.hora_inicio)<<" Hora final: "<<ConvertHora(sextas[i].first.hora_final)<<".\n";
     }
 }
 
