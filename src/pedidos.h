@@ -24,16 +24,19 @@ public:
     void adicionar_turma();
     void remover_turma();
     void alterar_turma();
+    std::shared_ptr<Turma> get_turmaf();
+    std::shared_ptr<Turma> get_turmai();
+    TipoPedido gettipo();
+    int getnup();
 };
 
 
 class ConjuntoPedidos{
 public:
     std::list<Pedido> lista_pedidos;
-
     bool conflito();
     bool desiquilibrio();
-
+    void adicionarpedido(Pedido pedido);
 };
 
 #endif

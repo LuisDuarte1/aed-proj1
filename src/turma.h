@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <list>
-
+#include <memory>
 #include "slot.h"
 
 /**
@@ -34,5 +34,7 @@ public:
     std::list<Slot> getaulas();
     std::string getuc_code();
 };
+
+bool operator==(const std::shared_ptr<Turma>& t1, const std::shared_ptr<Turma>& t2);
 
 #endif

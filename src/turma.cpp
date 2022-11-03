@@ -22,3 +22,8 @@ std::list<Slot> Turma::getaulas(){
 std::string Turma::getuc_code(){
     return uc_code;
 }
+
+bool operator==(const std::shared_ptr<Turma>& t1, const std::shared_ptr<Turma>& t2){
+    if(!t1 || !t2) return false;
+    return (*t1) == (*t2);
+}

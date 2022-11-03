@@ -1,6 +1,12 @@
 #include <iostream>
+#include <memory>
+#include <algorithm>
 #include "gestaoHorarios.h"
 #include "menu.h"
+#include "turma.h"
+#include "pedidos.h"
+
+
 int main(){
     GestaoHorarios gestao;
     gestao.lerFicheiros();
@@ -10,6 +16,9 @@ int main(){
         it++;
 
     }
+    teste();
     menu menu;
     menu.iniciar();
 }
+
+
