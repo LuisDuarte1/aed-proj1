@@ -24,6 +24,12 @@ public:
     void adicionar_turma();
     void remover_turma();
     void alterar_turma();
+
+    inline TipoPedido getTipoPedido(){return tipo;};
+    inline int getStudentNumber(){return nup;};
+    inline std::shared_ptr<Turma> getTurmaInicio(){return turma_inicio;};
+    inline std::shared_ptr<Turma> getTurmaFinal(){return turma_final;};
+
 };
 
 

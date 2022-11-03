@@ -7,8 +7,21 @@
 
 std::set<Estudante> GestaoHorarios::estudantes;
 std::list<std::shared_ptr<Turma>> GestaoHorarios::turmas;
-std::list<Pedido> GestaoHorarios::pedidos_pendentes;
-std::list<Pedido> GestaoHorarios::pedidos_recusados;
+std::list<ConjuntoPedidos> GestaoHorarios::pedidos_pendentes;
+std::list<ConjuntoPedidos> GestaoHorarios::pedidos_recusados;
+
+std::string convertTipoAula(Tipo t){
+    switch (t)
+    {
+    case(Teorica):
+        return "T";
+    case(Teorico_Pratica):
+        return "TP";
+    case(Pratica_Laboratorial):
+        return "PL";
+    }
+    throw "skill issue";
+}
 
 
 
@@ -169,6 +182,72 @@ void GestaoHorarios::lerFicheiros(){
             std::cout << "Turma do estudante nao e valida... Ignorando esta entry.\n";
             //TODO (luisd): usar ostream overloads para dar melhor print ao erro
             continue;
+        }
+    }
+}
+
+void GestaoHorarios::guardarFicheiros(){
+    #ifndef _WIN32
+        std::ofstream ucs = std::ofstream("../recursos/classes_per_uc.csv");
+        std::ofstream estudantes_turma = std::ofstream("../recursos/students_classes.csv");
+        std::ofstream turma_horario = std::ofstream("../recursos/classes.csv");
+        std::ofstream pedidos_rejeitados = std::ofstream("../recursos/pedidos_rejeitados.csv");
+
+    #else
+        std::ofstream ucs = std::ofstream("..\\recursos\\classes_per_uc.csv");
+        std::ofstream estudantes_turma = std::ofstream("..\\recursos\\students_classes.csv");
+        std::ofstream pedidos_rejeitados = std::ofstream("..\\recursos\\pedidos_rejeitados.csv");
+        std::ofstream turma_horario = std::ofstream("..\\recursos\\classes.csv");
+    #endif
+
+    //first we save the ucs, again
+    ucs << "UcCode,ClassCode" << std::endl;
+    for(auto i : GestaoHorarios::turmas){
+        ucs << i->uc_code << "," << i->class_code << std::endl;
+    }
+
+    //then we go on to estudantes_turma
+    estudantes_turma << "StudentCode,StudentName,UcCode,ClassCode" << std::endl;
+    for(auto i : GestaoHorarios::estudantes){
+        for(auto turma : i.getTurmas()){
+            estudantes_turma << i.getStudentNumber() << "," << i.getStudentName() 
+                << "," << turma->uc_code << "," << turma ->class_code << std::endl;
+        }
+    }
+
+    //then we go on to turmas again to save the schedules
+    turma_horario << "ClassCode,UcCode,Weekday,StartHour,Duration,Type" << std::endl;
+    for(auto i : GestaoHorarios::turmas){
+        for(Slot s : i->getaulas()){
+            estudantes_turma << i->class_code << "," << i->uc_code << "," << s.dia << "," << s.hora_inicio 
+                << "," << (s.hora_final - s.hora_inicio) << "," << (convertTipoAula(s.tipo_aula)) << std::endl;
+
+        }
+    }
+
+    pedidos_rejeitados << "UPCode,RequestType,UcCodeInital,ClassCodeInitial,UcCodeFinal,ClassCodeFinal" 
+        << std::endl;
+    for(auto i : GestaoHorarios::pedidos_recusados){
+        for(auto l : i.lista_pedidos){
+            switch(l.getTipoPedido()){
+                case Adicionar:
+                    pedidos_rejeitados << l.getStudentNumber() << "," << "Adicionar" << ",,," 
+                        << l.getTurmaFinal()->uc_code << "," << l.getTurmaFinal()->class_code << std::endl;
+                    break;
+
+                case Remover:
+                    pedidos_rejeitados << l.getStudentNumber() << "," << "Remover" << ","
+                        << l.getTurmaInicio()->uc_code << "," << l.getTurmaInicio()->class_code <<
+                        ",," << std::endl;
+                    break;
+
+                case Mudar:
+                    pedidos_rejeitados << l.getStudentNumber() << "," << "Mudar" << ","
+                        << l.getTurmaInicio()->uc_code << "," << l.getTurmaInicio()->class_code << ","
+                        << l.getTurmaFinal()->uc_code << "," <<  l.getTurmaFinal()->class_code << std::endl;
+                
+                    break;
+            }
         }
     }
 }

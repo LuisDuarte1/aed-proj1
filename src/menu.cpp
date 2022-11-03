@@ -369,17 +369,6 @@ void menu::pedidosalteracao(){
     }
 }
 
-std::string convertTipoAula(Tipo t){
-    switch (t)
-    {
-    case(Teorica):
-        return "T";
-    case(Teorico_Pratica):
-        return "TP";
-    case(Pratica_Laboratorial):
-        return "PL";
-    }
-}
 
 bool compareinicio(pair<Slot,string> a, pair<Slot,string> b){
     return(a.first.hora_inicio < b.first.hora_inicio);
