@@ -32,7 +32,8 @@ std::string& trim_string(std::string& str) {
             Ou seja ao ler ficheiros com o formato do windows no linux vamos ter um caracter a mais
             e vai induzir em erros na comparação de turmas.
         */
-        str = str.substr(0, str.size()-1);
+        if(str.find_first_of('\r') != std::string::npos)
+            str = str.substr(0, str.size()-1);
     #endif
     return str;
 }
@@ -84,12 +85,16 @@ void GestaoHorarios::lerFicheiros(){
 
         std::shared_ptr<Turma> t_found;
         bool found = false;
-        for(auto it = turmas.begin(); it != turmas.end(); it++){
+        for(auto it = GestaoHorarios::turmas.begin(); it != GestaoHorarios::turmas.end(); it++){
             if(*(*it) == t) {
                 t_found = *it;
                 found = true;
                 break;
             }
+        }
+        if(!found){
+            std::cout << "Nao foi encontrada a turma: " << t.uc_code << ":" << t.class_code << "\n"; 
+            exit(1);
         }
 
         t.estudantes = 0;
@@ -105,11 +110,11 @@ void GestaoHorarios::lerFicheiros(){
 
         std::getline(uc_linha_stream, cache_string, ',');
         #ifndef _WIN32
-            if(cache_string == "TP\r"){
+            if(cache_string == "TP\r" || cache_string == "TP"){
                 s.tipo_aula = Teorico_Pratica;
-            }else if(cache_string == "T\r"){
+            }else if(cache_string == "T\r" || cache_string == "T"){
                 s.tipo_aula = Teorica;
-            } else if(cache_string == "PL\r"){
+            } else if(cache_string == "PL\r" || cache_string == "PL"){
                 s.tipo_aula = Pratica_Laboratorial;
             } else{
                 std::cout << "Nao foi reconhecido o tipo de aula: " << cache_string <<"\n";

@@ -159,20 +159,16 @@ void menu::UCandTurmaandAno(){
                     "Input: ";
             cin >> nturma;
 
-            cout << "\nO codigo de uma UC e composta pela sigla do curso e um determinado numero\n"
-                    "Exemplo:L.EIC017\n";
-            cin >> nuc;
-            Turma t {nturma, nuc};
-            std::shared_ptr<Turma> t_p;
-            bool found = false;
-            for(auto it = GestaoHorarios::turmas.begin(); it != GestaoHorarios::turmas.end(); it++){
-                if(*(*it) == t){
-                    t_p = *it;
-                    found = true;
-                    break;
+            std::list<std::shared_ptr<Turma>> t_p;
+
+            copy_if(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(),
+                back_inserter(t_p),
+                [nturma](std::shared_ptr<Turma> i){
+                    return i->class_code == nturma;
                 }
-            }
-            if(!found){
+            );
+
+            if(t_p.size() == 0){
                 cout << "Nao foi encontrado uma turma correspondente... tente outra vez.\n";
                 return menu::UCandTurmaandAno();
             }
@@ -183,12 +179,16 @@ void menu::UCandTurmaandAno(){
             cin >> code;
             switch(code){
                 case 1:{
-                    cout << "\n" << t_p->class_code <<":" <<t_p->uc_code << " :: " << t_p->estudantes << " estudantes...\n";
+                    for(auto t : t_p){
+                        cout << "\n" << t->class_code <<":" <<t->uc_code << " :: " << t->estudantes << " estudantes...\n";
+
+                    }
                     break;
                 }
                 case 2:{
-                    cout <<"\n Horario de " << t_p->class_code <<":" <<t_p->uc_code << ":\n";
-                    menu::printhorario({t_p});
+                    cout <<"\n Horario de " << (*t_p.begin())->class_code << "\n\n";
+                    menu::printhorario(t_p);
+
                     break;
                 }
                 default:{
