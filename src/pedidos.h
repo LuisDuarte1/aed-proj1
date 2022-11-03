@@ -48,7 +48,6 @@ public:
      */
     void remover_turma();
     bool operator==(const Pedido& p2);
-    void alterar_turma();
     std::shared_ptr<Turma> get_turmaf();
     std::shared_ptr<Turma> get_turmai();
     TipoPedido gettipo();
@@ -58,21 +57,24 @@ public:
      */
     void alterar_turma();
 
-    inline TipoPedido getTipoPedido(){return tipo;};
-    inline int getStudentNumber(){return nup;};
-    inline std::shared_ptr<Turma> getTurmaInicio(){return turma_inicio;};
-    inline std::shared_ptr<Turma> getTurmaFinal(){return turma_final;};
+    inline TipoPedido getTipoPedido() const {return tipo;};
+    inline int getStudentNumber() const {return nup;};
+    inline std::shared_ptr<Turma> getTurmaInicio() const {return turma_inicio;};
+    inline std::shared_ptr<Turma> getTurmaFinal() const {return turma_final;};
 
 };
 
 
 class ConjuntoPedidos{
 public:
+    ConjuntoPedidos();
     ConjuntoPedidos(std::list<Pedido> lista);
     std::list<Pedido> lista_pedidos;
     bool conflito();
     std::list<Pedido> desiquilibrio();
     void adicionarpedido(Pedido pedido);
+    
+    bool operator==(const ConjuntoPedidos& p2) const;
 };
 
 #endif

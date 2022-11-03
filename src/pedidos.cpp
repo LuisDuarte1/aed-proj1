@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <climits>
 #include "pedidos.h"
 #include "estudante.h"
 #include "gestaoHorarios.h"
@@ -119,6 +120,25 @@ ConjuntoPedidos::ConjuntoPedidos(std::list<Pedido> lista){
     lista_pedidos = lista;
 }
 
+bool ConjuntoPedidos::operator==(const ConjuntoPedidos& p2) const{
+    if(p2.lista_pedidos.size() != lista_pedidos.size()) return false;
+    auto it1 = lista_pedidos.begin();
+    auto it2 = p2.lista_pedidos.begin();
+    while(it1 != lista_pedidos.end()){
+        if(!(it1->getStudentNumber() == it2->getStudentNumber() && it1->getTipoPedido() == it2->getTipoPedido()
+            && it1->getTurmaInicio() == it2->getTurmaInicio() && it1->getTurmaFinal() == it2->getTurmaFinal()))
+            return false;
+        it1++;
+        it2++;
+    }
+    return true;
+
+}
+
+
+ConjuntoPedidos::ConjuntoPedidos(){
+
+}
 
 bool Pedido::operator==(const Pedido& p2){
     if(tipo != p2.tipo) return false;

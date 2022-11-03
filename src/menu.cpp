@@ -95,7 +95,8 @@ void menu::UCandTurmaandAno(){
             cout << "Selecione as seguintes opcoes:\n"
                 "1 - Numero de estudantes em cada turma\n"
                 "2 - Horarios de cada turma\n"
-                "3 - Estudantes de cada turma\n\n"
+                "3 - Estudantes de cada turma\n"
+                "4- Vagas disponíveis de cada turma\n"
                 "Selecione a opcao:\n ";
             
             int opcao = -1;
@@ -139,8 +140,17 @@ void menu::UCandTurmaandAno(){
                     }
                 }
                 break;
-
-            default:
+            case 4:
+                cout << "\n Vagas disponíveis sem causar desequilibrio: \n";
+                int min_alunos = (*std::min_element(turmas_curso.begin(), turmas_curso.end(),
+                    [](std::shared_ptr<Turma> a, std::shared_ptr<Turma> b){
+                        return a->getestudantes() < b->getestudantes();
+                    }))->getestudantes();
+                for(auto t : turmas_curso){
+                    cout << "\n" << t->class_code << ":" << t->uc_code << " :: " 
+                        << (abs(min_alunos - t->getestudantes()) >= 4 ? 0 : abs(min_alunos - t->getestudantes())) 
+                        << " vagas \n";
+                }
                 break;
             }
 
@@ -175,7 +185,8 @@ void menu::UCandTurmaandAno(){
 
             cout<<"Pretende a ocupacao da turma ou o horario:\n"
                   "1-Ocupacao\n"
-                  "2-Horario\n";
+                  "2-Horario\n"
+                  "3-Vagas disponíveis\n";
             cin >> code;
             switch(code){
                 case 1:{
@@ -189,6 +200,19 @@ void menu::UCandTurmaandAno(){
                     cout <<"\n Horario de " << (*t_p.begin())->class_code << "\n\n";
                     menu::printhorario(t_p);
 
+                    break;
+                }
+                case 3:{
+                    cout << "\n Vagas disponíveis sem causar desequilibrio: \n";
+                    int min_alunos = (*std::min_element(t_p.begin(), t_p.end(),
+                        [](std::shared_ptr<Turma> a, std::shared_ptr<Turma> b){
+                            return a->getestudantes() < b->getestudantes();
+                        }))->getestudantes();
+                    for(auto t : t_p){
+                        cout << "\n" << t->class_code << ":" << t->uc_code << " :: " 
+                            << (abs(min_alunos - t->getestudantes()) >= 4 ? 0 : abs(min_alunos - t->getestudantes())) 
+                            << " vagas \n";
+                    }
                     break;
                 }
                 default:{
@@ -381,9 +405,9 @@ void menu::pedidosalteracao(){
                      "Por favor insira o codigo da UC.\n";
             cin>>UC_inicial;
             //Incompleto
-            Turma t = {turma_inicial, UC_inicial};
-            auto turma_to_find = std::make_shared<Turma>(t);
-            auto it_inicial = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
+            Turma t_i = {turma_inicial, UC_inicial};
+            auto turma_to_find_i = std::make_shared<Turma>(t_i);
+            auto it_inicial = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find_i);
             if(it_inicial == GestaoHorarios::turmas.end()){
                 cout << "Turma incial invalida tente outra vez...\n\n";
                 return menu::pedidosalteracao();
@@ -403,8 +427,8 @@ void menu::pedidosalteracao(){
                      "Por favor insira o codigo da UC.\n";
             cin>>UC_final;
             //Incompleto
-            Turma t = {turma_final, UC_final};
-            auto turma_to_find = std::make_shared<Turma>(t);
+            Turma t_f = {turma_final, UC_final};
+            auto turma_to_find = std::make_shared<Turma>(t_f);
             auto it_final = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
             if(it_inicial == GestaoHorarios::turmas.end()){
                 cout << "Turma Final invalida tente outra vez...\n\n";
@@ -465,9 +489,9 @@ void menu::pedidosalteracao(){
                         "Por favor insira o codigo da UC.\n";
                 cin>>UC_inicial;
                 //Incompleto
-                Turma t = {turma_inicial, UC_inicial};
-                auto turma_to_find = std::make_shared<Turma>(t);
-                auto it_inicial = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
+                Turma t_i = {turma_inicial, UC_inicial};
+                auto turma_to_find_i = std::make_shared<Turma>(t_i);
+                auto it_inicial = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find_i);
                 if(it_inicial == GestaoHorarios::turmas.end()){
                     cout << "Turma incial invalida tente outra vez...\n\n";
                     return menu::pedidosalteracao();

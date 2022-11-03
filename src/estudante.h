@@ -30,7 +30,7 @@ class Estudante{
          * @return true Se número up for igual.
          * @return false Se número up for diferente
          */
-        bool operator==(const Estudante& a);
+        bool operator==(const Estudante& a) const;
 
         /**
          * @brief Função para ver se o número de estudante é menor em relação a outro estudante.

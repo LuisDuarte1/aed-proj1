@@ -16,7 +16,7 @@ void removerEstudanteTurma(std::set<Estudante>& e_set,Estudante estudante ,std::
 
 
 
-bool Estudante::operator==(const Estudante& outro_estudante){
+bool Estudante::operator==(const Estudante& outro_estudante) const{
     return outro_estudante.getStudentNumber() == numero_up;
 }
 

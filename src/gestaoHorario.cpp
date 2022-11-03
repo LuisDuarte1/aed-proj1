@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <iterator>
+#include <map>
 
 std::set<Estudante> GestaoHorarios::estudantes;
 std::list<std::shared_ptr<Turma>> GestaoHorarios::turmas;
@@ -271,34 +273,81 @@ void GestaoHorarios::aceitarpedidos(ConjuntoPedidos conjuntopedidos) {
 }
 
 
+std::list<Pedido> inverso_pedido(std::list<Pedido> input){
+    std::list<Pedido> out;
+    for(Pedido i : input){
+        switch(i.getTipoPedido()){
+            case Adicionar:
+                out.push_back(Pedido(i.getStudentNumber(), Remover, i.getTurmaInicio(), i.getTurmaFinal()));
+                break;
+            case Remover:
+                out.push_back(Pedido(i.getStudentNumber(), Adicionar, i.getTurmaInicio(), i.getTurmaFinal()));
+                break;
+            case Mudar:
+                out.push_back(Pedido(i.getStudentNumber(), Mudar, i.getTurmaInicio(), i.getTurmaFinal()));
+
+
+        }
+    }
+    return out;
+}
+
 void GestaoHorarios::processarPedidos() {
 
-    for(ConjuntoPedidos pedidos1 : pedidos_pendentes){
-        bool skip = false;
-        if(pedidos1.conflito()){
-            pedidos_recusados.push_back(pedidos1);
+    //primeira run verificar se existem pedidos que tem conflito, já que esses podem ser logo removidos
+    for(auto it = pedidos_pendentes.begin(); it != pedidos_pendentes.end(); it++){
+       if((*it).conflito()){
+            pedidos_recusados.push_back(*it);
+            it = pedidos_pendentes.erase(it);
+            it--;
+       }
+    }
+    //agora sim vemos se nos possiveis há desequilibrio
+    std::vector<ConjuntoPedidos> pedidos_a_remover;
+    std::map<size_t,std::set<size_t>> matches_encontrados_pendentes;
+    for(auto it = pedidos_pendentes.begin(); it != pedidos_pendentes.end(); it++){
+        auto desq_1 = (*it).desiquilibrio();
+        if(desq_1.size() == 0){ // se não há desequilibrio podemos aceitar diretamente
             continue;
-        }
-
-        else if(pedidos1.desiquilibrio().size()>0){
-            std::list<Pedido> conflitos_resolvidos;
-            auto desq_pedidos1 = pedidos1.desiquilibrio();
-            for(ConjuntoPedidos pedidos2 : pedidos_pendentes){
-                if(pedidos2.conflito() || pedidos2.desiquilibrio().size()>0) continue;
-                bool valido = false;
-                auto desq_pedidos2 = pedidos2.desiquilibrio();
-                for(Pedido i : desq_pedidos1){
-                    if(i.gettipo() != Mudar){
-                        pedidos_recusados.push_back(pedidos1);
-                        break;
-
+        } else{
+            std::set<size_t> matches_encontrados;
+            std::list<Pedido> desq_1_inv = inverso_pedido(desq_1);
+            //encontra possiveis matches com outros pedidos na queue
+            for(auto it_2 = it; it != pedidos_pendentes.end(); it_2++){
+                if(it_2 == it) continue;
+                for(Pedido i: desq_1_inv){
+                    if(std::find((*it_2).lista_pedidos.begin(), (*it_2).lista_pedidos.end(), i) !=
+                        (*it_2).lista_pedidos.end()){
+                            size_t dist = std::distance(pedidos_pendentes.begin(), it_2);
+                            matches_encontrados.insert(dist);
                     }
-                    Pedido inv_(i.getnup(), i.gettipo(), i.get_turmai(), i.get_turmaf());
-                    if(std::find(desq_pedidos2.begin(), desq_pedidos2.end(), inv_) != desq_pedidos2.end()){
-
+                }                
+            }
+            //se não foram encontrados matches suficientes, remove-mos este e todos os outros que dependem deste
+            if(matches_encontrados.size() != desq_1_inv.size()){
+                size_t dist = std::distance(pedidos_pendentes.begin(), it);
+                for(auto pog = matches_encontrados_pendentes.begin(); pog != matches_encontrados_pendentes.end(); pog++){
+                    auto it_i = pog->second.find(dist);
+                    if(it_i != pog->second.end()){
+                        pedidos_a_remover.push_back(*std::next(pedidos_pendentes.begin(),pog->first));
+                        pog = matches_encontrados_pendentes.erase(pog);
+                        pog--;
+                        continue;
                     }
+                pedidos_a_remover.push_back(*std::next(pedidos_pendentes.begin(),dist));
                 }
+            } else{
+                //se foram encontrados matches suficientes nos adicionamos à lista dos matches_encontrados_pendentes
+                size_t dist = std::distance(pedidos_pendentes.begin(), it);
+                matches_encontrados_pendentes.insert(std::make_pair(dist, matches_encontrados));
             }
         }
+    }
+    for(ConjuntoPedidos t: pedidos_a_remover){
+        pedidos_recusados.push_back(t);
+        pedidos_pendentes.remove(t);
+    }
+    for(ConjuntoPedidos i : pedidos_pendentes){
+        aceitarpedidos(i);
     }
 }
