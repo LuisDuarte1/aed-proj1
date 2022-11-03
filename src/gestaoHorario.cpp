@@ -6,8 +6,8 @@
 
 std::set<Estudante> GestaoHorarios::estudantes;
 std::list<std::shared_ptr<Turma>> GestaoHorarios::turmas;
-std::list<Pedido> GestaoHorarios::pedidos_pendentes;
-std::list<Pedido> GestaoHorarios::pedidos_recusados;
+std::list<ConjuntoPedidos> GestaoHorarios::pedidos_pendentes;
+std::list<ConjuntoPedidos> GestaoHorarios::pedidos_recusados;
 
 std::string& trim_string(std::string& str) {
     #ifndef _WIN32
@@ -166,6 +166,50 @@ void GestaoHorarios::lerFicheiros(){
             std::cout << "Turma do estudante nao e valida... Ignorando esta entry.\n";
             //TODO (luisd): usar ostream overloads para dar melhor print ao erro
             continue;
+        }
+    }
+}
+
+void GestaoHorarios::aceitarpedidos(ConjuntoPedidos conjuntopedidos) {
+    auto it = GestaoHorarios::estudantes.find(Estudante(conjuntopedidos.lista_pedidos.begin()->getnup(), ""));
+    for(Pedido pedido : conjuntopedidos.lista_pedidos){
+        if(pedido.gettipo()==Adicionar) adicionarEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.get_turmaf());
+        else if(pedido.gettipo()==Remover) removerEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.get_turmai());
+        else{
+            adicionarEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.get_turmaf());
+            removerEstudanteTurma(GestaoHorarios::estudantes, *it, pedido.get_turmai());}
+    }
+}
+
+
+void GestaoHorarios::processarPedidos() {
+
+    for(ConjuntoPedidos pedidos1 : pedidos_pendentes){
+        bool skip = false;
+        if(pedidos1.conflito()){
+            pedidos_recusados.push_back(pedidos1);
+            continue;
+        }
+
+        else if(pedidos1.desiquilibrio().size()>0){
+            std::list<Pedido> conflitos_resolvidos;
+            auto desq_pedidos1 = pedidos1.desiquilibrio();
+            for(ConjuntoPedidos pedidos2 : pedidos_pendentes){
+                if(pedidos2.conflito() || pedidos2.desiquilibrio().size()>0) continue;
+                bool valido = false;
+                auto desq_pedidos2 = pedidos2.desiquilibrio();
+                for(Pedido i : desq_pedidos1){
+                    if(i.gettipo() != Mudar){
+                        pedidos_recusados.push_back(pedidos1);
+                        break;
+
+                    }
+                    Pedido inv_(i.getnup(), i.gettipo(), i.get_turmai(), i.get_turmaf());
+                    if(std::find(desq_pedidos2.begin(), desq_pedidos2.end(), inv_) != desq_pedidos2.end()){
+
+                    }
+                }
+            }
         }
     }
 }

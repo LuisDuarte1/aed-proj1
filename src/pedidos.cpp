@@ -38,7 +38,8 @@ int Pedido::getnup() {
     return nup;
 }
 
-bool ConjuntoPedidos::desiquilibrio(){
+std::list<Pedido> ConjuntoPedidos::desiquilibrio(){
+    std::list<Pedido> ret;
     for(Pedido pedido : lista_pedidos){
         if(pedido.gettipo()==Remover) continue;
         std::vector<std::shared_ptr<Turma>> turmas_curso;
@@ -54,13 +55,15 @@ bool ConjuntoPedidos::desiquilibrio(){
             if(turma->getestudantes()<min) min = turma->getestudantes();
         }
         if(pedido.gettipo()==TipoPedido::Adicionar){
-            if(min+3<pedido.get_turmaf()->getestudantes()) return true;}
+            if(min+3<pedido.get_turmaf()->getestudantes())
+                ret.push_back(pedido);
+            }
         else if(pedido.get_turmai()->getestudantes()!=min){
-            if(min+3<pedido.get_turmaf()->getestudantes()) return true;}
+            if(min+3<pedido.get_turmaf()->getestudantes()) ret.push_back(pedido);}
         else{
-            if(min+2<pedido.get_turmaf()->getestudantes()) return true;
+            if(min+2<pedido.get_turmaf()->getestudantes()) ret.push_back(pedido);
         }}
-    return false;
+    return ret;
 }
 
 void Pedido::adicionar_turma(){
@@ -112,5 +115,23 @@ void ConjuntoPedidos::adicionarpedido(Pedido pedido){
     lista_pedidos.push_back(pedido);
 }
 
+ConjuntoPedidos::ConjuntoPedidos(std::list<Pedido> lista){
+    lista_pedidos = lista;
+}
 
 
+bool Pedido::operator==(const Pedido& p2){
+    if(tipo != p2.tipo) return false;
+    switch (tipo) {
+        case Adicionar:
+            if(turma_final == p2.turma_final) return true;
+            return false;
+        case Remover:
+            if(turma_inicio == p2.turma_inicio) return true;
+            return false;
+        case Mudar:
+            if(turma_inicio == p2.turma_inicio && turma_final == p2.turma_final) return true;
+            return false;
+    }
+    return false;
+}
