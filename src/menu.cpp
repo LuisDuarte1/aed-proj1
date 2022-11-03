@@ -281,7 +281,12 @@ void menu::pedidosalteracao(){
                 cout << "Por favor, insira sem o 'up' \n";
                 return menu::pedidosalteracao();
             }
-            nestudante = "up" + nestudante;
+            int n_up = atoi(nestudante.c_str());
+            if(find(GestaoHorarios::estudantes.begin(), GestaoHorarios::estudantes.end(), Estudante(n_up, ""))
+                == GestaoHorarios::estudantes.end()){
+                cout << "O número de estudante é inválido, tente outra vez..\n\n";
+                return menu::pedidosalteracao();
+            }
             string turma;
             wcout << "O codigo de uma turma é composto pelo ano correspondente, seguido pela sigla do curso correspondente e, de seguida, a respoetiva turma.\n"
                      "Exemplo: 1LEIC01\n"
@@ -292,7 +297,19 @@ void menu::pedidosalteracao(){
                      "Exemplo:L.EIC01\n"
                      "Por favor insira o codigo da UC pretendida:\n";
             cin>>UC;
-            //Incompleto
+
+            Turma t = {turma, UC};
+            auto turma_to_find = std::make_shared<Turma>(t);
+            auto it = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
+            if(it == GestaoHorarios::turmas.end()){
+                cout << "Turma invalida tente outra vez...\n\n";
+                return menu::pedidosalteracao();
+            }
+
+            ConjuntoPedidos c_p;
+            c_p.lista_pedidos.push_back(Pedido(n_up, Remover, *it));
+            GestaoHorarios::pedidos_recusados.push_back(c_p);
+            
             break;
         }
         case 2:{
@@ -305,18 +322,35 @@ void menu::pedidosalteracao(){
                 cout << "Por favor, insira sem o 'up' \n";
                 return menu::pedidosalteracao();
             }
-            nestudante = "up" + nestudante;
+            int n_up = atoi(nestudante.c_str());
+            if(find(GestaoHorarios::estudantes.begin(), GestaoHorarios::estudantes.end(), Estudante(n_up, ""))
+                == GestaoHorarios::estudantes.end()){
+                cout << "O número de estudante é inválido, tente outra vez..\n\n";
+                return menu::pedidosalteracao();
+            }
             string turma;
             wcout << "O codigo de uma turma é composto pelo ano correspondente, seguido pela sigla do curso correspondente e, de seguida, a respoetiva turma.\n"
                      "Exemplo: 1LEIC01\n"
-                     "Por favor insira o codigo correspondnete a turma que pretende ser adicionado:\n";
+                     "Por favor insira o codigo correspondente a turma pretendida (a qual se pretende remover):\n";
             cin>>turma;
             string UC;
             wcout << "O codigo de uma UC é composta pela sigla do curso e um determinado número.\n"
                      "Exemplo:L.EIC01\n"
-                     "Por favor insira o codigo da UC.\n";
+                     "Por favor insira o codigo da UC pretendida:\n";
             cin>>UC;
-            //Incompleto
+
+            Turma t = {turma, UC};
+            auto turma_to_find = std::make_shared<Turma>(t);
+            auto it = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
+            if(it == GestaoHorarios::turmas.end()){
+                cout << "Turma invalida tente outra vez...\n\n";
+                return menu::pedidosalteracao();
+            }
+
+            ConjuntoPedidos c_p;
+            c_p.lista_pedidos.push_back(Pedido(n_up, Adicionar, *it));
+            GestaoHorarios::pedidos_recusados.push_back(c_p);
+            
             break;
         }
         case 3:{
@@ -329,24 +363,80 @@ void menu::pedidosalteracao(){
                 cout << "Por favor, insira sem o 'up' \n";
                 return menu::pedidosalteracao();
             }
-            nestudante = "up" + nestudante;
-            string turma;
+            int n_up = atoi(nestudante.c_str());
+            auto it_es = find(GestaoHorarios::estudantes.begin(), GestaoHorarios::estudantes.end(), Estudante(n_up, ""));
+            if( it_es == GestaoHorarios::estudantes.end()){
+                cout << "O número de estudante é inválido, tente outra vez..\n\n";
+                return menu::pedidosalteracao();
+            }
+            cout << "\n\n Insira a Turma Incial \n\n ";
+            string turma_inicial;
             wcout << "O codigo de uma turma é composto pelo ano correspondente, seguido pela sigla do curso correspondente e, de seguida, a respoetiva turma.\n"
                      "Exemplo: 1LEIC01\n"
                      "Por favor insira o codigo correspondnete a turma que pretende ser adicionado:\n";
-            cin>>turma;
-            string UC;
+            cin>>turma_inicial;
+            string UC_inicial;
             wcout << "O codigo de uma UC é composta pela sigla do curso e um determinado número.\n"
                      "Exemplo:L.EIC01\n"
                      "Por favor insira o codigo da UC.\n";
-            cin>>UC;
+            cin>>UC_inicial;
             //Incompleto
+            Turma t = {turma_inicial, UC_inicial};
+            auto turma_to_find = std::make_shared<Turma>(t);
+            auto it_inicial = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
+            if(it_inicial == GestaoHorarios::turmas.end()){
+                cout << "Turma incial invalida tente outra vez...\n\n";
+                return menu::pedidosalteracao();
+            }
+
+            //===================================
+
+            cout << "\n\n Insira a Turma Final \n\n ";
+            string turma_final;
+            wcout << "O codigo de uma turma é composto pelo ano correspondente, seguido pela sigla do curso correspondente e, de seguida, a respoetiva turma.\n"
+                     "Exemplo: 1LEIC01\n"
+                     "Por favor insira o codigo correspondnete a turma que pretende ser adicionado:\n";
+            cin>>turma_final;
+            string UC_final;
+            wcout << "O codigo de uma UC é composta pela sigla do curso e um determinado número.\n"
+                     "Exemplo:L.EIC01\n"
+                     "Por favor insira o codigo da UC.\n";
+            cin>>UC_final;
+            //Incompleto
+            Turma t = {turma_final, UC_final};
+            auto turma_to_find = std::make_shared<Turma>(t);
+            auto it_final = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
+            if(it_inicial == GestaoHorarios::turmas.end()){
+                cout << "Turma Final invalida tente outra vez...\n\n";
+                return menu::pedidosalteracao();
+            }
+
+            //sanity check that we are not replacing things that we can't
+
+            if((*it_inicial)->uc_code != (*it_final)->uc_code){
+                cout << "As turmas a trocar nao sao da mesma uc... tente novamente.\n\n";
+                return menu::pedidosalteracao();
+            }
+
+            if((*it_inicial) == (*it_final)){
+                cout << "Nao se pode trocar a mesma turma... duh \n\n";
+                return menu::pedidosalteracao();
+            }
+
+            Pedido p(n_up, Mudar, (*it_inicial), (*it_final));
+
+            ConjuntoPedidos p_pedidos;
+
+            p_pedidos.lista_pedidos.push_back(p);
+
+            GestaoHorarios::pedidos_pendentes.push_back(p_pedidos);
             break;
         }
         case 4:{
             int numero;
             cout << "Quantas alteracoes pretende efetuar?\n";
             cin >> numero;
+            ConjuntoPedidos p_pedidos;
             for(int i = 0;i<n;i++){
                 string nestudante;
                 cout << "Por favor insira o numero mecanografico do estudante: (Nota: sem o 'up')\n";
@@ -357,18 +447,69 @@ void menu::pedidosalteracao(){
                     cout << "Por favor, insira sem o 'up' \n";
                     return menu::pedidosalteracao();
                 }
-                nestudante = "up" + nestudante;
-                string turma;
+                int n_up = atoi(nestudante.c_str());
+                auto it_es = find(GestaoHorarios::estudantes.begin(), GestaoHorarios::estudantes.end(), Estudante(n_up, ""));
+                if( it_es == GestaoHorarios::estudantes.end()){
+                    cout << "O número de estudante é inválido, tente outra vez..\n\n";
+                    return menu::pedidosalteracao();
+                }
+                cout << "\n\n Insira a Turma Incial \n\n ";
+                string turma_inicial;
                 wcout << "O codigo de uma turma é composto pelo ano correspondente, seguido pela sigla do curso correspondente e, de seguida, a respoetiva turma.\n"
-                         "Exemplo: 1LEIC01\n"
-                         "Por favor insira o codigo correspondnete a turma que pretende ser adicionado:\n";
-                cin>>turma;
-                string UC;
+                        "Exemplo: 1LEIC01\n"
+                        "Por favor insira o codigo correspondnete a turma que pretende ser adicionado:\n";
+                cin>>turma_inicial;
+                string UC_inicial;
                 wcout << "O codigo de uma UC é composta pela sigla do curso e um determinado número.\n"
-                         "Exemplo:L.EIC01\n"
-                         "Por favor insira o codigo da UC.\n";
-                cin>>UC;
+                        "Exemplo:L.EIC01\n"
+                        "Por favor insira o codigo da UC.\n";
+                cin>>UC_inicial;
                 //Incompleto
+                Turma t = {turma_inicial, UC_inicial};
+                auto turma_to_find = std::make_shared<Turma>(t);
+                auto it_inicial = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
+                if(it_inicial == GestaoHorarios::turmas.end()){
+                    cout << "Turma incial invalida tente outra vez...\n\n";
+                    return menu::pedidosalteracao();
+                }
+
+                //===================================
+
+                cout << "\n\n Insira a Turma Final \n\n ";
+                string turma_final;
+                wcout << "O codigo de uma turma é composto pelo ano correspondente, seguido pela sigla do curso correspondente e, de seguida, a respoetiva turma.\n"
+                        "Exemplo: 1LEIC01\n"
+                        "Por favor insira o codigo correspondnete a turma que pretende ser adicionado:\n";
+                cin>>turma_final;
+                string UC_final;
+                wcout << "O codigo de uma UC é composta pela sigla do curso e um determinado número.\n"
+                        "Exemplo:L.EIC01\n"
+                        "Por favor insira o codigo da UC.\n";
+                cin>>UC_final;
+                //Incompleto
+                Turma t = {turma_final, UC_final};
+                auto turma_to_find = std::make_shared<Turma>(t);
+                auto it_final = std::find(GestaoHorarios::turmas.begin(), GestaoHorarios::turmas.end(), turma_to_find);
+                if(it_inicial == GestaoHorarios::turmas.end()){
+                    cout << "Turma Final invalida tente outra vez...\n\n";
+                    return menu::pedidosalteracao();
+                }
+
+                //sanity check that we are not replacing things that we can't
+
+                if((*it_inicial)->uc_code != (*it_final)->uc_code){
+                    cout << "As turmas a trocar nao sao da mesma uc... tente novamente.\n\n";
+                    return menu::pedidosalteracao();
+                }
+
+                if((*it_inicial) == (*it_final)){
+                    cout << "Nao se pode trocar a mesma turma... duh \n\n";
+                    return menu::pedidosalteracao();
+                }
+
+                Pedido p(n_up, Mudar, (*it_inicial), (*it_final));
+
+                p_pedidos.lista_pedidos.push_back(p);
 
             }
             //Incompleto

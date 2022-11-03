@@ -11,6 +11,7 @@
 #include "gestaoHorarios.h"
 #include "turma.h"
 #include "slot.h"
+#include "pedidos.h"
 #include "turma.h"
 #include "estudante.h"
 using namespace std;
