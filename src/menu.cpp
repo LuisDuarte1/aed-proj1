@@ -199,20 +199,55 @@ void menu::UCandTurmaandAno(){
 }
 
 void menu::estudantesmaisnucs() {
-    string nestudante;
-    cout << "Por favor insira o numero mecanografico do estudante: (Nota: sem o 'up')\n";
-    cin >> nestudante;
-    string up = "up";
-    transform(nestudante.begin(), nestudante.end(), nestudante.begin(), ::tolower);
-    if (nestudante.substr(0, 2) == up) {
-        cout << "Por favor, insira sem o 'up' \n";
-        return menu::estudante();
-    }
-    nestudante = "up" + nestudante;
+
     int n;
     cout <<"Por favor insira o numero de UCs:\n";
-    cin >>n;
-    //Incompleto
+    if(!(cin >> n)){
+        cout << "Número de UCs inválido... tente novamente....\n\n";
+        return menu::estudantesmaisnucs();
+    }
+
+    std::vector<Estudante> estudantes_ucs;
+    copy_if(GestaoHorarios::estudantes.begin(), GestaoHorarios::estudantes.end(),
+        std::back_inserter(estudantes_ucs),
+        [n](Estudante e){
+            return e.getTurmas().size() >= n;
+        });
+    
+    if(estudantes_ucs.size() == 0){
+        cout << "Nao foi encontrado nenhum estudante com numero igual e maior de que " << n << " UCs...";
+        return;
+    }
+
+    cout << "Por favor, especifique a ordem que quer dar display aos estudantes\n"
+        "1 - Nº UCs por ordem decrescente\n"
+        "2 - Ordem alfabetica\n";
+    cin >> n;
+    Turma t = {"turma", "uc"};
+    switch (n)
+    {
+    case 1:
+        std::sort(estudantes_ucs.begin(), estudantes_ucs.end(), [](Estudante a, Estudante b){
+            return a.getTurmas().size()>b.getTurmas().size();
+        });
+        cout << "Listagem de estudantes...\n\n";
+        for(Estudante e: estudantes_ucs){
+           cout << "up" <<  e.getStudentNumber() << " : " << e.getStudentName() << " : " << e.getTurmas().size() << "\n";
+        }
+        return;
+    case 2:
+        std::sort(estudantes_ucs.begin(), estudantes_ucs.end(), [](Estudante a, Estudante b){
+            return a.getStudentName()<b.getStudentName();
+        });
+        cout << "Listagem de estudantes...\n\n";
+        for(Estudante e: estudantes_ucs){
+           cout << "up" <<  e.getStudentNumber() << " : " << e.getStudentName() << " : " << e.getTurmas().size() << "\n";
+        }
+        return;
+    default:
+        cout << "\n Opcao invalida... por favor tente outra vez...\n";
+        return menu::estudantesmaisnucs();
+    }
 }
 
 void menu::pedidosalteracao(){
