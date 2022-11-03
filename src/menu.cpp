@@ -12,7 +12,8 @@ void menu::iniciar() {
                   "1-Procura por horario de Estudante:\n"
                   "2-Procura por UC/Turma(Horario ou Ocupacao)/Ano:\n"
                   "3-Procura por estudantes com mais de n UCs:\n"
-                  "4-Pedido de alteração de turma:\n";
+                  "4-Pedido de alteração de turma:\n"
+                  "5-Guardar, processar os pedidos e sair do programa\n";
     cin >> n;
     switch(n){
         case 1:
@@ -27,11 +28,19 @@ void menu::iniciar() {
         case 4:
             menu::pedidosalteracao();
             break;
+        case 5:
+            menu::saireguardar();
         default:
             cout << "O numero que inseriu nao foi aceite, por favor insira um numero valido\n";
             return menu::iniciar();
     }
     menu::iniciar();
+}
+
+void menu::saireguardar(){
+    GestaoHorarios::processarPedidos();
+    GestaoHorarios::guardarFicheiros();
+    exit(0);
 }
 
 void menu::estudante(){

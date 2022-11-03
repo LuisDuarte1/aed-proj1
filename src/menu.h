@@ -28,6 +28,8 @@ class menu {
         void estudantesmaisnucs();
         void pedidosalteracao();
         void printhorario(list<std::shared_ptr<Turma>> horarios);
+
+        void saireguardar();
 };
 
 

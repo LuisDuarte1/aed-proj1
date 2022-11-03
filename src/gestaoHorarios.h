@@ -32,7 +32,8 @@ class GestaoHorarios{
          * 
          */
         static void guardarFicheiros();
-        void processarPedidos();
+        
+        static void processarPedidos();
 };
 
 /**

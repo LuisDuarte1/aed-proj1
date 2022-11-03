@@ -219,7 +219,7 @@ void GestaoHorarios::guardarFicheiros(){
     turma_horario << "ClassCode,UcCode,Weekday,StartHour,Duration,Type" << std::endl;
     for(auto i : GestaoHorarios::turmas){
         for(Slot s : i->getaulas()){
-            estudantes_turma << i->class_code << "," << i->uc_code << "," << s.dia << "," << s.hora_inicio 
+            turma_horario << i->class_code << "," << i->uc_code << "," << s.dia << "," << s.hora_inicio 
                 << "," << (s.hora_final - s.hora_inicio) << "," << (convertTipoAula(s.tipo_aula)) << std::endl;
 
         }
@@ -250,4 +250,9 @@ void GestaoHorarios::guardarFicheiros(){
             }
         }
     }
+}
+
+
+void GestaoHorarios::processarPedidos(){
+
 }
