@@ -79,7 +79,13 @@ class Estudante{
          */
         void removerTurma(std::shared_ptr<Turma>& turma_remover);
 
-
+        /**
+         * @brief Retorna uma cópia do nome do estudante 
+         * 
+         * @return std::string nome do estudante
+         */
+        inline std::string getStudentName(){return nome;};
+        
 
 };
 

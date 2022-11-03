@@ -20,11 +20,30 @@ class GestaoHorarios{
         /**
          * @brief Lê os ficheiros .csv para carregar os estudantes. 
          * Atenção que os .csv devem ser postos na pasta recursos FORA da pasta de build do CMake.
+         * Complexidade O(n^2)
+         */
+        static void lerFicheiros();
+
+
+        /**
+         * @brief Guarda os dados em memória para ficheiros .csv que já existem.
+         * Atenção que os .csv devem ser postos na pasta recursos FORA da pasta de build do CMake.
+         * Complexidade O(n^2)
          * 
          */
-        void lerFicheiros();
+        static void guardarFicheiros();
+        
         static void processarPedidos();
         static void aceitarpedidos(ConjuntoPedidos conjuntopedidos);
 };
+
+/**
+ * @brief Converte o tipo de aula para uma string equivalente usada principalmente nos .csv
+ * 
+ * @param t Tipo de aula
+ * @return std::string Tipo de aula em string
+ */
+std::string convertTipoAula(Tipo t);
+
 
 #endif
