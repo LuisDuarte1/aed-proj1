@@ -64,6 +64,11 @@ class menu {
          */
         void printhorario(list<std::shared_ptr<Turma>> horarios);
 
+        /**
+         * @brief Esta função processa os pedidos, guarda os ficheiros e depois sai
+         * com exit code 0.
+         * 
+         */
         void saireguardar();
 };
 

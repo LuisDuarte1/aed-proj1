@@ -33,7 +33,28 @@ class GestaoHorarios{
          */
         static void guardarFicheiros();
         
+        /**
+         * @brief Processa todos os pedidos num estilo relativamente FIFO.
+         * Faz o seguinte:
+         *  - Remove todos os pedidos com conflito
+         *  - Tenta encontrar pedidos com desequilibrio e tenta encontrar matches noutros conjuntos de pedidos
+         * que a resolvam.
+         *  - Se as dependencias dos pedidos a seguir não conseguirem ser cumpridas, 
+         * elimina o mesmo e as dependencias.
+         *  - A lista final são todos os pedidos que possam ser cumpridos.
+         *
+         * 
+         * Complexidade(??)
+         * 
+         */
         static void processarPedidos();
+
+        /**
+         * @brief Aceita o conjunto pedido fazendo as alterações necessárias nas estruturas
+         * de dados do GestaoHorarios.
+         * Complexidade(n)
+         * @param conjuntopedidos a aceita.
+         */
         static void aceitarpedidos(ConjuntoPedidos conjuntopedidos);
 };
 
