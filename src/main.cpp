@@ -16,7 +16,6 @@ int main(){
         it++;
 
     }
-    teste();
     menu menu;
     menu.iniciar();
 }
