@@ -1,0 +1,32 @@
+=== Mostrar horário de estudante ===
+202024892
+
+=== Mostrar UC ===
+
+L.EIC012
+
+=== Mostrar Turma ===
+
+1LEIC01
+
+=== Mostrar estudantes com mais de n ucs ===
+
+5 ucs 
+8 ucs
+
+=== Pedidos aceitados ===
+2LEIC15:L.EIC014
+Adicionar Sexta -> pog 14 -> 16
+    202028717
+
+Mudar:
+    2LEIC07:L.EIC012 :: 0 vagas 
+        202024722 : Lia
+
+=== Pedidos rejeitados ===
+
+2LEIC01:L.EIC012 :: 0 vagas 
+201954217 - Anastacio
+
+2LEIC02:L.EIC012 :: 0 vagas 
+202026847 - Candida
