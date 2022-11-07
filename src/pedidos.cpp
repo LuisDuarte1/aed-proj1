@@ -11,7 +11,7 @@
 Pedido::Pedido(int nup, TipoPedido tipo, std::shared_ptr<Turma> turma){
     this->nup=nup;
     this->tipo=tipo;
-    if(tipo==TipoPedido::Adicionar){
+    if(tipo!=TipoPedido::Adicionar){
         this->turma_inicio=turma;}
     else{
         this->turma_final=turma;}

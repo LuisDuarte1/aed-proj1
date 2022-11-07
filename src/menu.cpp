@@ -332,7 +332,7 @@ void menu::pedidosalteracao(){
 
             ConjuntoPedidos c_p;
             c_p.lista_pedidos.push_back(Pedido(n_up, Remover, *it));
-            GestaoHorarios::pedidos_recusados.push_back(c_p);
+            GestaoHorarios::pedidos_pendentes.push_back(c_p);
             
             break;
         }
@@ -373,7 +373,7 @@ void menu::pedidosalteracao(){
 
             ConjuntoPedidos c_p;
             c_p.lista_pedidos.push_back(Pedido(n_up, Adicionar, *it));
-            GestaoHorarios::pedidos_recusados.push_back(c_p);
+            GestaoHorarios::pedidos_pendentes.push_back(c_p);
             
             break;
         }
