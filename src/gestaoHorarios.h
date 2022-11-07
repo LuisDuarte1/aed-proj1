@@ -15,7 +15,7 @@ class GestaoHorarios{
         static std::set<Estudante> estudantes;
         static std::list<ConjuntoPedidos> pedidos_pendentes;
         static std::list<std::shared_ptr<Turma>> turmas;
-        static std::list<ConjuntoPedidos> pedidos_recusados;
+        static std::queue<ConjuntoPedidos> pedidos_recusados; // <3 
 
         /**
          * @brief Lê os ficheiros .csv para carregar os estudantes. 
@@ -44,7 +44,7 @@ class GestaoHorarios{
          *  - A lista final são todos os pedidos que possam ser cumpridos.
          *
          * 
-         * Complexidade(??)
+         * Complexidade: n^4
          * 
          */
         static void processarPedidos();
@@ -60,7 +60,7 @@ class GestaoHorarios{
 
 /**
  * @brief Converte o tipo de aula para uma string equivalente usada principalmente nos .csv
- * 
+ * Complexidade(n)
  * @param t Tipo de aula
  * @return std::string Tipo de aula em string
  */

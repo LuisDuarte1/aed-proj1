@@ -10,7 +10,7 @@
 std::set<Estudante> GestaoHorarios::estudantes;
 std::list<std::shared_ptr<Turma>> GestaoHorarios::turmas;
 std::list<ConjuntoPedidos> GestaoHorarios::pedidos_pendentes;
-std::list<ConjuntoPedidos> GestaoHorarios::pedidos_recusados;
+std::queue<ConjuntoPedidos> GestaoHorarios::pedidos_recusados;
 
 std::string convertTipoAula(Tipo t){
     switch (t)
@@ -234,7 +234,10 @@ void GestaoHorarios::guardarFicheiros(){
 
     pedidos_rejeitados << "UPCode,RequestType,UcCodeInital,ClassCodeInitial,UcCodeFinal,ClassCodeFinal" 
         << std::endl;
-    for(auto i : GestaoHorarios::pedidos_recusados){
+    
+    while(pedidos_recusados.size() != 0){
+        auto i = pedidos_recusados.front();
+        pedidos_recusados.pop();
         for(auto l : i.lista_pedidos){
             switch(l.getTipoPedido()){
                 case Adicionar:
@@ -297,7 +300,7 @@ void GestaoHorarios::processarPedidos() {
     //primeira run verificar se existem pedidos que tem conflito, já que esses podem ser logo removidos
     for(auto it = pedidos_pendentes.begin(); it != pedidos_pendentes.end(); it++){
        if((*it).conflito()){
-            pedidos_recusados.push_back(*it);
+            pedidos_recusados.push(*it);
             it = pedidos_pendentes.erase(it);
             it--;
        }
@@ -344,7 +347,7 @@ void GestaoHorarios::processarPedidos() {
         }
     }
     for(ConjuntoPedidos t: pedidos_a_remover){
-        pedidos_recusados.push_back(t);
+        pedidos_recusados.push(t);
         pedidos_pendentes.remove(t);
     }
     for(ConjuntoPedidos i : pedidos_pendentes){
